@@ -26,6 +26,22 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Set up
+
+```
+En app.module.ts se configura la base de datos a la que se conectara
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      username: 'root',
+      password: 'root',
+      database: 'root',
+      host: 'localhost',
+      port: 5432,
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,
+    }),
+```
+
 ## Installation
 
 ```bash
@@ -71,4 +87,5 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
 # SchoolDataSystem

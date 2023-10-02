@@ -10,7 +10,11 @@ export abstract class GenericEntity {
   id: number;
 
   @CreateDateColumn()
+<<<<<<< HEAD
   createAt: Date;
+=======
+  careateAt: Date;
+>>>>>>> 2c898e8 (tablas creadas falta relaciones)
 
   @UpdateDateColumn()
   updateAt: Date;

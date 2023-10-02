@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {
   Controller,
   Get,
@@ -68,3 +69,9 @@ export class GroupsController {
     return this.groupsService.remove(id);
   }
 }
+=======
+import { Controller } from '@nestjs/common';
+
+@Controller('groups')
+export class GroupsController {}
+>>>>>>> 2c898e8 (tablas creadas falta relaciones)

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { DirectionsService } from './directions.service';
 import { DirectionsEntity } from './directions.entity';
@@ -25,3 +26,9 @@ export class DirectionsController extends GenericController<DirectionsEntity, Di
   }
 
 }
+=======
+import { Controller } from '@nestjs/common';
+
+@Controller('directions')
+export class DirectionsController {}
+>>>>>>> 2c898e8 (tablas creadas falta relaciones)

@@ -1,7 +1,8 @@
-import { Column } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 import {Studetns} from '../students/students.entity';
 
+@Entity()
 export class GroupsEntity extends GenericEntity {
 >>>>>>> 2c898e8 (tablas creadas falta relaciones)
   @Column({ type: 'time' })

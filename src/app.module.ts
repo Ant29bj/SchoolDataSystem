@@ -13,13 +13,6 @@ import { TeachersController } from './app/teachers/teachers.controller';
 import { GroupsController } from './app/groups/groups.controller';
 import { StudentsController } from './app/students/students.controller';
 
-import { DirectionsService } from './app/directions/directions.service';
-
-//import { PayrollMoudle } from './app/payroll/payroll.module';
-
-import { DirectionsController } from './app/directions/directions.controller';
-
-
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -33,7 +26,7 @@ import { DirectionsController } from './app/directions/directions.controller';
       synchronize: true,
     }),
   ],
-  controllers: [AppController, DirectionsController,   ParentsController, TeachersController, GroupsController, StudentsController],
-  providers: [AppService, DirectionsService],
+  controllers: [AppController, DirectionsController, ParentsController, TeachersController, GroupsController, StudentsController],
+  providers: [AppService],
 })
 export class AppModule {}

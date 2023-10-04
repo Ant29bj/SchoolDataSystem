@@ -6,6 +6,13 @@
 
     El pago de los alumnos debera ser como minimo 590 y aumentara de 80 en 80 hasta 990
 
+## Hecho
+
+    ```
+    tabla de nomnina hecha
+
+    ```
+
 ## Adicionales
 
     ```
@@ -26,6 +33,8 @@
     agregar tabla de nommina(receptor, cantidad y fecha)
 
     agregar tabla registrar tabla
+
+    agregar tabla empleados (falta definir)
 
     parents entity
         // falta relacionar con estudiantes

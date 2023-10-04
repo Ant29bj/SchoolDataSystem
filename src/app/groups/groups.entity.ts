@@ -1,6 +1,7 @@
-import { Column } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 
+@Entity()
 export class GroupsEntity extends GenericEntity {
   @Column({ type: 'time' })
   schedule: string;

@@ -8,27 +8,29 @@ import { AppService } from './app.service';
   controllers: [AppController],
 =======
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DirectionsController } from './app/directions/directions.controller';
 import { ParentsController } from './app/parents/parents.controller';
 import { TeachersController } from './app/teachers/teachers.controller';
 import { GroupsController } from './app/groups/groups.controller';
 import { StudentsController } from './app/students/students.controller';
+import { DirectionsController } from './app/directions/directions.controller';
+import { DirectionsService } from './app/directions/directions.service';
+
+
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
       username: 'root',
-      password: 'root',
+      password: '5920hl',
       database: 'root',
-      host: 'localhost',
+      host: '127.0.0.1',
       port: 5432,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
   ],
   controllers: [AppController, DirectionsController, ParentsController, TeachersController, GroupsController, StudentsController],
->>>>>>> 2c898e8 (tablas creadas falta relaciones)
   providers: [AppService],
 })
 export class AppModule {}

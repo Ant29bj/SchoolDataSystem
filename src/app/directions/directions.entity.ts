@@ -4,6 +4,9 @@ import { GenericEntity } from '../generics/generic.entity';
 @Entity('directions')
 export class Directions extends GenericEntity {
   @Column()
+  id: number;
+  
+  @Column()
   addressLine1: string;
 
   @Column()

@@ -12,7 +12,7 @@ import { ParentsController } from './app/parents/parents.controller';
 import { TeachersController } from './app/teachers/teachers.controller';
 import { GroupsController } from './app/groups/groups.controller';
 import { StudentsController } from './app/students/students.controller';
-import { PayrollController } from './app/payroll/payroll.controller';
+import { PayrollMoudle } from './app/payroll/payroll.module';
 
 @Module({
   imports: [
@@ -26,6 +26,9 @@ import { PayrollController } from './app/payroll/payroll.controller';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
+
+    PayrollMoudle,
+    DirectionsModule,
   ],
   controllers: [
     AppController,
@@ -34,7 +37,7 @@ import { PayrollController } from './app/payroll/payroll.controller';
     TeachersController,
     GroupsController,
     StudentsController,
-    PayrollController,
+    PayrollMoudle,
   ],
   providers: [AppService],
 })

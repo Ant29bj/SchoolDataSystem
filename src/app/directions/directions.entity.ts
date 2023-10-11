@@ -2,7 +2,7 @@ import { Column, Entity } from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 
 @Entity('directions')
-export class DirectiosEntity extends GenericEntity {
+export class Directions extends GenericEntity {
   @Column()
   id: number;
   

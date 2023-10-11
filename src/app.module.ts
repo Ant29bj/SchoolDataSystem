@@ -16,15 +16,15 @@ import { DirectionsService } from './app/directions/directions.service';
     TypeOrmModule.forRoot({
       type: 'postgres',
       username: 'root',
-      password: '5920hl',
+      password: 'root',
       database: 'root',
-      host: '127.0.0.1',
+      host: 'localhost',
       port: 5432,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
   ],
-  controllers: [AppController, DirectionsController,   ParentsController, TeachersController, GroupsController, StudentsController],
-  providers: [AppService, DirectionsService],
+  controllers: [AppController,   ParentsController, TeachersController, GroupsController, StudentsController],
+  providers: [AppService],
 })
 export class AppModule {}

@@ -12,6 +12,7 @@ import { ParentsController } from './app/parents/parents.controller';
 import { TeachersController } from './app/teachers/teachers.controller';
 import { GroupsController } from './app/groups/groups.controller';
 import { StudentsController } from './app/students/students.controller';
+import { PayrollController } from './app/payroll/payroll.controller';
 
 @Module({
   imports: [
@@ -26,7 +27,15 @@ import { StudentsController } from './app/students/students.controller';
       synchronize: true,
     }),
   ],
-  controllers: [AppController, DirectionsController, ParentsController, TeachersController, GroupsController, StudentsController],
+  controllers: [
+    AppController,
+    DirectionsController,
+    ParentsController,
+    TeachersController,
+    GroupsController,
+    StudentsController,
+    PayrollController,
+  ],
   providers: [AppService],
 })
 export class AppModule {}

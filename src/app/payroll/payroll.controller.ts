@@ -1,4 +1,12 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { PayrrollService } from './generi.service';
 
-@Controller('payroll')
-export class PayrollController {}
+@Controller('Payroll')
+export class PayrollController {
+  constructor(private readonly payrollService: PayrrollService) {}
+
+  @Get()
+  getPayrolls() {
+    return this.payrollService.find();
+  }
+}

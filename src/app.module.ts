@@ -8,6 +8,7 @@ import { TeachersController } from './app/teachers/teachers.controller';
 import { GroupsController } from './app/groups/groups.controller';
 import { StudentsController } from './app/students/students.controller';
 import { PayrollMoudle } from './app/payroll/payroll.module';
+import { DirectionsModule } from './app/directions/directions.module';
 
 @Module({
   imports: [
@@ -21,6 +22,9 @@ import { PayrollMoudle } from './app/payroll/payroll.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
+
+    PayrollMoudle,
+    DirectionsModule,
   ],
   controllers: [
     AppController,
@@ -29,7 +33,6 @@ import { PayrollMoudle } from './app/payroll/payroll.module';
     TeachersController,
     GroupsController,
     StudentsController,
-    PayrollMoudle,
   ],
   providers: [AppService],
 })

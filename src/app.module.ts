@@ -9,6 +9,7 @@ import { GroupsModule } from './app/groups/groups.module';
 import { StudentsModule } from './app/students/students.module';
 import { UsersModule } from './app/users/users.module';
 import { EmpleadosModule } from './app/empleados/empleados.module';
+import { PayrollMoudle } from './app/payroll/payroll.module';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { EmpleadosModule } from './app/empleados/empleados.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    ParentsModule, DirectionsModule, GroupsModule, StudentsModule, TeachersModule, UsersModule, EmpleadosModule
+    ParentsModule, DirectionsModule, GroupsModule, StudentsModule, TeachersModule, UsersModule, EmpleadosModule, PayrollMoudle
   ],
   controllers: [AppController],
   providers: [AppService],

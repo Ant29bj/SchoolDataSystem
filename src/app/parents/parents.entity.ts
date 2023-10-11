@@ -15,4 +15,5 @@ export class ParentsEntity extends GenericEntity {
 
   @OneToMany(() => StudentsEntity, student => student.parents)
   alumnos: StudentsEntity[];
+ 
 }

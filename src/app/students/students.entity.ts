@@ -11,6 +11,7 @@ enum Status{
   Adelantado = 'Pago por adelantado',
   Proximo = 'Proximo a pagar'
 }
+
 @Entity('students')
 export class StudentsEntity extends GenericEntity {
   @Column()
@@ -19,11 +20,11 @@ export class StudentsEntity extends GenericEntity {
   @Column()
   lastName: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp' , nullable:true})
   registrationDate: Date;
 
   // aun falta definir el formato de la matricula
-  @Column()
+  @Column({})
   matricula: string;
 
   @Column({ length: 10 })
@@ -51,7 +52,7 @@ export class StudentsEntity extends GenericEntity {
   @Column({ type: 'money' })
   debt: number;
 
-  @Column()
+  @Column({nullable:true})
   paymentDate: Date;
 
   @Column()
@@ -65,4 +66,5 @@ export class StudentsEntity extends GenericEntity {
   // OneToMany
   @OneToMany(() => ParentsEntity, parents => parents.alumnos)
   parents: ParentsEntity;
+ 
 }

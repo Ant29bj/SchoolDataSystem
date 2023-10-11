@@ -10,7 +10,7 @@ export abstract class GenericEntity {
   id: number;
 
   @CreateDateColumn()
-  careateAt: Date;
+  createAt: Date;
 
   @UpdateDateColumn()
   updateAt: Date;

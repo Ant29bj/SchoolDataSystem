@@ -13,7 +13,7 @@ export class ParentsEntity extends GenericEntity {
   @Column()
   email: string;
 
-  @OneToMany(() => StudentsEntity, student => student.parents)
+  /*@OneToMany(() => StudentsEntity, student => student.parents)
   alumnos: StudentsEntity[];
- 
+ */
 }

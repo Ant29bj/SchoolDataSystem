@@ -2,9 +2,17 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, OneToMany } from 'ty
 import { GenericEntity } from '../generics/generic.entity';
 import { TeachersEntity } from '../teachers/teachers.entity';
 import { StudentsEntity } from '../students/students.entity';
+import { CreateGroupDto } from './dto/create-group.dto';
 
 @Entity('groups')
 export class GroupsEntity extends GenericEntity {
+ constructor (group:CreateGroupDto){
+  super();
+  if (group){
+    this.schedule = group.schedule
+    this.name = group.name
+  }
+ }
   @Column({ type: 'time' })
   schedule: string;
 

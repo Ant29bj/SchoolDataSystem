@@ -25,7 +25,6 @@ export class StudentsEntity extends GenericEntity {
   @Column({ type: 'timestamp' })
   registrationDate: Date;
 
-  // aun falta definir el formato de la matricula
   @Column()
   matricula: string;
 
@@ -59,14 +58,13 @@ export class StudentsEntity extends GenericEntity {
 
   @Column({nullable:true})
   status: Status;
-/*
-  // one to one relation
-  @OneToOne(() => DirectionsEntity)
+
+  
+  /*@OneToOne(() => DirectionsEntity, direction => direction.student)
   @JoinColumn()
   direction: DirectionsEntity;
-
-  // OneToMany
-  @OneToMany(() => ParentsEntity, parents => parents.alumnos)
+*/
+  @OneToOne(() => ParentsEntity, parent => parent.protegido)
+  @JoinColumn()
   parents: ParentsEntity;
- */
 }

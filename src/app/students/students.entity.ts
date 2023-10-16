@@ -15,24 +15,7 @@ enum Status{
 
 @Entity('students')
 export class StudentsEntity extends GenericEntity {
-  constructor (student:CreateStudentDto){
-    
-    super();
-    if (student) {
-      this.firstName = student.firstName
-      this.lastName = student.lastName
-      this.phone = student.phone
-      this.amount = student.amount
-      this.email = student.email
-      this.aumentos = student.aumentos
-      this.birthDay = new Date(student.birthDay)
-      this.grade = student.grade
-      this.debt = student.debt
-      this.paymentDate = new Date(student.paymentDate)
-      //this.direction = student.direction || new DirectionsEntity();
-      //this.parents = student.parents || new ParentsEntity()
-    }
-  }
+ 
   @Column()
   firstName: string;
 

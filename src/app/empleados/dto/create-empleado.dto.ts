@@ -9,5 +9,5 @@ export class CreateEmpleadoDto {
     puesto: Puesto
     sueldo: number
     email: string
-    /*direction: DirectionsEntity
-*/}
+    direction: DirectionsEntity
+}

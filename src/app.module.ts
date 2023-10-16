@@ -15,7 +15,7 @@ import { PayrollMoudle } from './app/payroll/payroll.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      username: 'postgres',
+      username: 'root',
       password: 'root',
       database: 'root',
       host: 'localhost',
@@ -23,7 +23,14 @@ import { PayrollMoudle } from './app/payroll/payroll.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    ParentsModule, DirectionsModule, GroupsModule, StudentsModule, TeachersModule, UsersModule, EmpleadosModule, PayrollMoudle
+    ParentsModule,
+    DirectionsModule,
+    GroupsModule,
+    StudentsModule,
+    TeachersModule,
+    UsersModule,
+    EmpleadosModule,
+    PayrollMoudle,
   ],
   controllers: [AppController],
   providers: [AppService],

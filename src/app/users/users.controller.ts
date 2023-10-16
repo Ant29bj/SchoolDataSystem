@@ -11,6 +11,8 @@ import {
 import { UsersService } from './users.service';
 import { UsersEntity } from './users.entity';
 import { GenericController } from '../generics/generic.controller';
+import { ApiBody } from '@nestjs/swagger';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('users')
 export class UsersController extends GenericController<
@@ -21,6 +23,7 @@ export class UsersController extends GenericController<
     super(usersService);
   }
 
+  @ApiBody({ type: CreateUserDto, required: true })
   @Post()
   override async create(@Body() entity: UsersEntity) {
     return this.usersService.create(entity);

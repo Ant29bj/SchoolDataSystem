@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GroupsEntity } from './groups.entity';
+import { CreateGroupDto } from './dto/create-group.dto';
 
 @Injectable()
 export class GroupsService {
@@ -18,7 +19,7 @@ export class GroupsService {
     return this.groupsRepository.findOne({where: {id} });
   }
 
-  async create(group: GroupsEntity): Promise<GroupsEntity> {
+  async create(group: CreateGroupDto): Promise<GroupsEntity> {
     const newGroup = this.groupsRepository.create(group);
     return await this.groupsRepository.save(newGroup);
   }

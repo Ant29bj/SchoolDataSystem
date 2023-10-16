@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { GroupsService } from './groups.service';
 import { GroupsEntity } from './groups.entity';
+import { CreateGroupDto } from './dto/create-group.dto';
 
 @Controller('groups')
 export class GroupsController {
@@ -17,7 +18,7 @@ export class GroupsController {
   }
 
   @Post()
-  create(@Body() group: GroupsEntity): Promise<GroupsEntity> {
+  create(@Body() group: CreateGroupDto): Promise<GroupsEntity> {
     return this.groupsService.create(group);
   }
 

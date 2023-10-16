@@ -3,6 +3,7 @@ import { GenericEntity } from '../generics/generic.entity';
 import { Max, Min } from 'class-validator';
 import { ParentsEntity } from '../parents/parents.entity'; // Importa la entidad ParentsEntity
 import { DirectionsEntity } from '../directions/directions.entity'; // Importa la entidad ParentsEntity
+import { CreateStudentDto } from './dto/create-student.dto';
 
 
 enum Status{
@@ -14,17 +15,34 @@ enum Status{
 
 @Entity('students')
 export class StudentsEntity extends GenericEntity {
+  constructor (student:CreateStudentDto){
+    
+    super();
+    if (student) {
+      this.firstName = student.firstName
+      this.lastName = student.lastName
+      this.phone = student.phone
+      this.amount = student.amount
+      this.email = student.email
+      this.aumentos = student.aumentos
+      this.birthDay = new Date(student.birthDay)
+      this.grade = student.grade
+      this.debt = student.debt
+      this.paymentDate = new Date(student.paymentDate)
+      //this.direction = student.direction || new DirectionsEntity();
+      //this.parents = student.parents || new ParentsEntity()
+    }
+  }
   @Column()
   firstName: string;
 
   @Column()
   lastName: string;
 
-  @Column({ type: 'timestamp' , nullable:true})
+  @Column({ type: 'timestamp' })
   registrationDate: Date;
 
-  // aun falta definir el formato de la matricula
-  @Column({})
+  @Column()
   matricula: string;
 
   @Column({ length: 10 })
@@ -52,19 +70,18 @@ export class StudentsEntity extends GenericEntity {
   @Column({ type: 'money' })
   debt: number;
 
-  @Column({nullable:true})
+  @Column()
   paymentDate: Date;
 
-  @Column()
+  @Column({nullable:true})
   status: Status;
 
-  // one to one relation
-  @OneToOne(() => DirectionsEntity)
+  
+  /*@OneToOne(() => DirectionsEntity, direction => direction.student)
   @JoinColumn()
   direction: DirectionsEntity;
-
-  // OneToMany
-  @OneToMany(() => ParentsEntity, parents => parents.alumnos)
+*/
+  @OneToOne(() => ParentsEntity, parent => parent.protegido)
+  @JoinColumn()
   parents: ParentsEntity;
- 
 }

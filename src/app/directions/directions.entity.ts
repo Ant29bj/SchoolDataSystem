@@ -1,8 +1,12 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToOne, JoinColumn } from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
+import { CreateDirectionDto } from './dto/create-direction.dto';
+import { ParentsEntity } from '../parents/parents.entity';
+import { StudentsEntity } from '../students/students.entity';
 
 @Entity('directions')
 export class DirectionsEntity extends GenericEntity {
+  
   @Column()
   addressLine1: string;
 
@@ -20,4 +24,12 @@ export class DirectionsEntity extends GenericEntity {
 
   @Column()
   extNumber: string;
+
+  /*@OneToOne(() => ParentsEntity, parent => parent.direction)
+  @JoinColumn()
+  parent: ParentsEntity;
+
+  @OneToOne(() => StudentsEntity, student => student.direction)
+  @JoinColumn()
+  student: StudentsEntity;*/
 }

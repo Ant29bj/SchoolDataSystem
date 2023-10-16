@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { StudentsEntity } from './students.entity';
+import { CreateStudentDto } from './dto/create-student.dto';
 
 @Controller('students')
 export class StudentsController {
@@ -11,23 +12,23 @@ export class StudentsController {
     return this.studentsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: number): Promise<StudentsEntity> {
-    return this.studentsService.findOne(id);
+  @Get(':matricula')
+  findOne(@Param('matricula') matricula: string): Promise<StudentsEntity> {
+    return this.studentsService.findOne(matricula);
   }
 
   @Post()
-  create(@Body() student: StudentsEntity): Promise<StudentsEntity> {
+  create(@Body() student: CreateStudentDto): Promise<StudentsEntity> {
     return this.studentsService.create(student);
   }
 
-  @Put(':id')
-  update(@Param('id') id: number, @Body() student: StudentsEntity): Promise<StudentsEntity> {
-    return this.studentsService.update(id, student);
+  @Put(':matricula')
+  update(@Param('matricula') matricula: string, @Body() student: StudentsEntity): Promise<StudentsEntity> {
+    return this.studentsService.update(matricula, student);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string): Promise<void> {
-    return this.studentsService.remove(id);
+  @Delete(':matricula')
+  remove(@Param('matricula') matricula: string): Promise<void> {
+    return this.studentsService.remove(matricula);
   }
 }

@@ -12,9 +12,12 @@ import { ParentsController } from './app/parents/parents.controller';
 import { TeachersController } from './app/teachers/teachers.controller';
 import { GroupsController } from './app/groups/groups.controller';
 import { StudentsController } from './app/students/students.controller';
-import { DirectionsController } from './app/directions/directions.controller';
+
 import { DirectionsService } from './app/directions/directions.service';
 
+//import { PayrollMoudle } from './app/payroll/payroll.module';
+
+import { DirectionsController } from './app/directions/directions.controller';
 
 
 @Module({

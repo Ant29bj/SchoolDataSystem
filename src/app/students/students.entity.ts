@@ -1,38 +1,8 @@
-<<<<<<< HEAD
-import {
-  Column,
-  Entity,
-  OneToOne,
-  JoinColumn,
-  OneToMany,
-  BeforeInsert,
-  ManyToOne,
-} from 'typeorm';
-import { GenericEntity } from '../generics/generic.entity';
-import { Max, Min } from 'class-validator';
-import { ParentsEntity } from '../parents/parents.entity'; // Importa la entidad ParentsEntity
-import { GroupsEntity } from '../groups/groups.entity';
-
-export enum Status {
-  Abono = 'Abono',
-  Debe = 'Debe',
-  NoDebe = 'No debe',
-  Adelantado = 'Pago por adelantado',
-  Proximo = 'Proximo a pagar',
-}
-
-@Entity('students')
-export class StudentsEntity extends GenericEntity {
-  @Column()
-  firstName: string;
-
-  @Column({ default: false })
-  multa: boolean;
-
-=======
 import { Column, Entity } from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 import { Max, Min } from 'class-validator';
+import { GroupsEntity } from '../groups/groups.entity';
+import { group } from 'console';
 
 @Entity('students')
 export class Studetns extends GenericEntity {
@@ -122,5 +92,4 @@ export class Studetns extends GenericEntity {
   // OneToMany
   @Column()
   paretns: string;
->>>>>>> 2c898e8 (tablas creadas falta relaciones)
 }

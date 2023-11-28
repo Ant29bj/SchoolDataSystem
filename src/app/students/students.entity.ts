@@ -5,7 +5,7 @@ import { GroupsEntity } from '../groups/groups.entity';
 import { group } from 'console';
 
 @Entity('students')
-export class Students extends GenericEntity {
+export class StudentsEntity extends GenericEntity {
   @Column()
   firstName: string;
 

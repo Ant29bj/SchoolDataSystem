@@ -1,21 +1,11 @@
-import { Column, Entity, OneToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne} from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 import { Max, Min } from 'class-validator';
-import { ParentsEntity } from '../parents/parents.entity'; // Importa la entidad ParentsEntity
-import { DirectionsEntity } from '../directions/directions.entity'; // Importa la entidad ParentsEntity
-import { CreateStudentDto } from './dto/create-student.dto';
-
-
-enum Status{
-  Debe = 'Debe',
-  NoDebe = 'No debe',
-  Adelantado = 'Pago por adelantado',
-  Proximo = 'Proximo a pagar'
-}
+import { GroupsEntity } from '../groups/groups.entity';
+import { group } from 'console';
 
 @Entity('students')
-export class StudentsEntity extends GenericEntity {
- 
+export class Students extends GenericEntity {
   @Column()
   firstName: string;
 
@@ -25,6 +15,7 @@ export class StudentsEntity extends GenericEntity {
   @Column({ type: 'timestamp' })
   registrationDate: Date;
 
+  // aun falta definir el formato de la matricula
   @Column()
   matricula: string;
 
@@ -56,15 +47,17 @@ export class StudentsEntity extends GenericEntity {
   @Column()
   paymentDate: Date;
 
-  @Column({nullable:true})
-  status: Status;
+  // enum status
 
+  // one to one relation
+  @Column()
+  direction: string;
+
+  // OneToMany
+  @Column()
+  paretns: string;
+
+  @ManyToOne(() => GroupsEntity, group => group.students)
+  group: GroupsEntity;
   
-  /*@OneToOne(() => DirectionsEntity, direction => direction.student)
-  @JoinColumn()
-  direction: DirectionsEntity;
-*/
-  @OneToOne(() => ParentsEntity, parent => parent.protegido)
-  @JoinColumn()
-  parents: ParentsEntity;
 }

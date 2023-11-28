@@ -3,6 +3,7 @@ import { GenericEntity } from '../generics/generic.entity';
 import { Max, Min } from 'class-validator';
 import { GroupsEntity } from '../groups/groups.entity';
 import { group } from 'console';
+import { ParentsEntity } from '../parents/parents.entity';
 
 @Entity('students')
 export class StudentsEntity extends GenericEntity {
@@ -54,8 +55,8 @@ export class StudentsEntity extends GenericEntity {
   direction: string;
 
   // OneToMany
-  @Column()
-  paretns: string;
+  @ManyToOne(() => ParentsEntity, parents =>  parents.protegido)
+  parents: string;
 
   @ManyToOne(() => GroupsEntity, group => group.students)
   group: GroupsEntity;

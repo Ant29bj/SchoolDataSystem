@@ -1,7 +1,8 @@
-import { Column, ManyToOne, OneToMany,  } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany,  } from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 import {StudentsEntity} from '../students/students.entity';
 
+@Entity('groups')
 export class GroupsEntity extends GenericEntity {
   @Column({ type: 'time' })
   schedule: string;

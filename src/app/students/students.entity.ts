@@ -2,7 +2,6 @@ import { Column, Entity, JoinColumn, ManyToOne} from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 import { Max, Min } from 'class-validator';
 import { GroupsEntity } from '../groups/groups.entity';
-import { group } from 'console';
 import { ParentsEntity } from '../parents/parents.entity';
 
 @Entity('students')

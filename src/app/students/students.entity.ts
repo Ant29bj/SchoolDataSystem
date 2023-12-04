@@ -2,22 +2,22 @@ import { Column, Entity, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 import { Max, Min } from 'class-validator';
 import { ParentsEntity } from '../parents/parents.entity'; // Importa la entidad ParentsEntity
-import { DirectionsEntity } from '../directions/directions.entity'; // Importa la entidad ParentsEntity
-import { CreateStudentDto } from './dto/create-student.dto';
 
-
-enum Status{
+export enum Status {
+  Abono = 'Abono',
   Debe = 'Debe',
   NoDebe = 'No debe',
   Adelantado = 'Pago por adelantado',
-  Proximo = 'Proximo a pagar'
+  Proximo = 'Proximo a pagar',
 }
 
 @Entity('students')
 export class StudentsEntity extends GenericEntity {
- 
   @Column()
   firstName: string;
+
+  @Column()
+  multa: false;
 
   @Column()
   lastName: string;
@@ -56,15 +56,14 @@ export class StudentsEntity extends GenericEntity {
   @Column()
   paymentDate: Date;
 
-  @Column({nullable:true})
+  @Column({ nullable: true })
   status: Status;
 
-  
   /*@OneToOne(() => DirectionsEntity, direction => direction.student)
   @JoinColumn()
   direction: DirectionsEntity;
 */
-  @OneToOne(() => ParentsEntity, parent => parent.protegido)
+  @OneToOne(() => ParentsEntity, (parent) => parent.protegido)
   @JoinColumn()
   parents: ParentsEntity;
 }

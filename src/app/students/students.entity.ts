@@ -1,6 +1,7 @@
-import { Column, Entity, OneToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne} from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 import { Max, Min } from 'class-validator';
+
 import { ParentsEntity } from '../parents/parents.entity'; // Importa la entidad ParentsEntity
 
 export enum Status {
@@ -10,6 +11,7 @@ export enum Status {
   Adelantado = 'Pago por adelantado',
   Proximo = 'Proximo a pagar',
 }
+
 
 @Entity('students')
 export class StudentsEntity extends GenericEntity {
@@ -25,6 +27,7 @@ export class StudentsEntity extends GenericEntity {
   @Column({ type: 'timestamp' })
   registrationDate: Date;
 
+  // aun falta definir el formato de la matricula
   @Column()
   matricula: string;
 
@@ -66,4 +69,5 @@ export class StudentsEntity extends GenericEntity {
   @OneToOne(() => ParentsEntity, (parent) => parent.protegido)
   @JoinColumn()
   parents: ParentsEntity;
+
 }

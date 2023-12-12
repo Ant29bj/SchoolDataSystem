@@ -11,7 +11,6 @@ import {
 import { FindManyOptions } from 'typeorm';
 import { GenericEntity } from './generic.entity';
 import { GenericService } from './generic.service';
-import { log } from 'console';
 
 export abstract class GenericController<
   Entity extends GenericEntity,

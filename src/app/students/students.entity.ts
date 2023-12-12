@@ -1,13 +1,25 @@
 import { Column, Entity, JoinColumn, ManyToOne} from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 import { Max, Min } from 'class-validator';
-import { GroupsEntity } from '../groups/groups.entity';
-import { ParentsEntity } from '../parents/parents.entity';
+
+import { ParentsEntity } from '../parents/parents.entity'; // Importa la entidad ParentsEntity
+
+export enum Status {
+  Abono = 'Abono',
+  Debe = 'Debe',
+  NoDebe = 'No debe',
+  Adelantado = 'Pago por adelantado',
+  Proximo = 'Proximo a pagar',
+}
+
 
 @Entity('students')
 export class StudentsEntity extends GenericEntity {
   @Column()
   firstName: string;
+
+  @Column()
+  multa: boolean = false;
 
   @Column()
   lastName: string;
@@ -47,17 +59,15 @@ export class StudentsEntity extends GenericEntity {
   @Column()
   paymentDate: Date;
 
-  // enum status
+  @Column({ nullable: true })
+  status: Status;
 
-  // one to one relation
-  @Column()
-  direction: string;
+  /*@OneToOne(() => DirectionsEntity, direction => direction.student)
+  @JoinColumn()
+  direction: DirectionsEntity;
+*/
+  @OneToOne(() => ParentsEntity, (parent) => parent.protegido)
+  @JoinColumn()
+  parents: ParentsEntity;
 
-  // OneToMany
-  @ManyToOne(() => ParentsEntity, parents =>  parents.protegido)
-  parents: string;
-
-  @ManyToOne(() => GroupsEntity, group => group.students)
-  group: GroupsEntity;
-  
 }

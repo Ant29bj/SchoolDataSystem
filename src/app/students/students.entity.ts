@@ -17,7 +17,7 @@ export class StudentsEntity extends GenericEntity {
   firstName: string;
 
   @Column()
-  multa: false;
+  multa: boolean = false;
 
   @Column()
   lastName: string;

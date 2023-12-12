@@ -9,6 +9,8 @@ import { Repository, LessThan, Between } from 'typeorm';
 import { Status, StudentsEntity } from './students.entity';
 import { GenericService } from '../generics/generic.service';
 
+// Agregar historial de pago del alumno
+
 @Injectable()
 export class StudentsService
   extends GenericService<StudentsEntity>
@@ -53,10 +55,6 @@ export class StudentsService
       student.status = Status.Proximo;
       await this.studentsRepository.save(student);
     }
-    // multa de 80 peso despues de 3 dias agregar nuevo atributo a la entidad
-
-    // a la semana de deber avisar que no ha pagado el chamaco
-
     // const estudiantesSobregirados = await this.studentsRepository.find({
     //   where: {
     //     paymentDate: LessThan(currentDay),

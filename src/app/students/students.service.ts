@@ -78,6 +78,7 @@ export class StudentsService
     const horario = new Date(fecha);
     horario.setHours(10, 53, 0, 0); // hora las 11:59 de la noche
     const intervalo = 24 * 60 * 60 * 1000;
+    console.log('entro');
 
     let restanteDeTiempo = horario.getTime() - fecha.getTime();
 

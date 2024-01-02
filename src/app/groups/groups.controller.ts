@@ -35,7 +35,6 @@ export class GroupsController {
 
   @Post()
   async create(@Body() group: CreateGroupDto): Promise<GroupsEntity> {
-    console.log(group);
     const teacher = await this.teacherService.findOneById(group.teacher);
 
     if (!teacher) {

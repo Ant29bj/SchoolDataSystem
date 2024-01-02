@@ -21,8 +21,7 @@ export class GroupsEntity extends GenericEntity {
   }
   @Column({ type: 'time' })
   schedule: string;
-
-  // name = teacher + horario agregar función en el servicio
+  // name = teacher + horario agregar funcion en el servicio
   @Column()
   name: string;
 

@@ -1,7 +1,16 @@
-import { Column, Entity, OneToOne, JoinColumn, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToOne,
+  JoinColumn,
+  OneToMany,
+  BeforeInsert,
+  ManyToOne,
+} from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 import { Max, Min } from 'class-validator';
 import { ParentsEntity } from '../parents/parents.entity'; // Importa la entidad ParentsEntity
+import { GroupsEntity } from '../groups/groups.entity';
 
 export enum Status {
   Abono = 'Abono',
@@ -16,8 +25,8 @@ export class StudentsEntity extends GenericEntity {
   @Column()
   firstName: string;
 
-  @Column()
-  multa: boolean = false;
+  @Column({ default: false })
+  multa: boolean;
 
   @Column()
   lastName: string;
@@ -25,13 +34,16 @@ export class StudentsEntity extends GenericEntity {
   @Column({ type: 'timestamp' })
   registrationDate: Date;
 
-  @Column()
-  matricula: string;
+  @Column({ unique: true })
+  matricula?: string;
+
+  @Column({ unique: true, width: 18 })
+  curp: string;
 
   @Column({ length: 10 })
   phone: string;
 
-  @Column({ type: 'money' })
+  @Column({ type: 'money', default: 590 })
   @Min(590)
   @Max(990)
   amount: number;
@@ -45,18 +57,18 @@ export class StudentsEntity extends GenericEntity {
   @Column()
   birthDay: Date;
 
-  @Column({ type: 'float' })
+  @Column({ type: 'float', default: 0 })
   @Min(0)
   @Max(10)
   grade: number;
 
-  @Column({ type: 'money' })
+  @Column({ type: 'money', default: 590 })
   debt: number;
 
   @Column()
   paymentDate: Date;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: Status.Debe })
   status: Status;
 
   /*@OneToOne(() => DirectionsEntity, direction => direction.student)
@@ -66,4 +78,7 @@ export class StudentsEntity extends GenericEntity {
   @OneToOne(() => ParentsEntity, (parent) => parent.protegido)
   @JoinColumn()
   parents: ParentsEntity;
+
+  @ManyToOne(() => GroupsEntity, (group) => group.students)
+  group: GroupsEntity;
 }

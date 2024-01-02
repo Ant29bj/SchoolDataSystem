@@ -1,18 +1,24 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  OneToMany,
+} from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 import { TeachersEntity } from '../teachers/teachers.entity';
 import { StudentsEntity } from '../students/students.entity';
 import { CreateGroupDto } from './dto/create-group.dto';
+import { share } from 'rxjs';
 
 @Entity('groups')
 export class GroupsEntity extends GenericEntity {
- constructor (group:CreateGroupDto){
-  super();
-  if (group){
-    this.schedule = group.schedule
-    this.name = group.name
+  constructor(schedule: string, name: string, teacher: TeachersEntity) {
+    super();
+    this.name = name;
+    this.schedule = schedule;
+    this.teacher = teacher;
   }
- }
   @Column({ type: 'time' })
   schedule: string;
 
@@ -20,9 +26,9 @@ export class GroupsEntity extends GenericEntity {
   @Column()
   name: string;
 
-  @ManyToOne(() => TeachersEntity, teacher => teacher.id)
+  @ManyToOne(() => TeachersEntity, (teacher) => teacher.id)
   teacher: TeachersEntity;
 
-  @OneToMany(() => StudentsEntity, student => student.id)
+  @OneToMany(() => StudentsEntity, (student) => student.group)
   students: StudentsEntity[];
 }

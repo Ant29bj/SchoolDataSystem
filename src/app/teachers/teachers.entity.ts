@@ -23,6 +23,6 @@ export class TeachersEntity extends GenericEntity {
   grupos: GroupsEntity[];
 */
 
-  @OneToMany(() => GroupsEntity, (grupo) => grupo.id)
+  @OneToMany(() => GroupsEntity, (grupo) => grupo.teacher)
   grupos: GroupsEntity[];
 }

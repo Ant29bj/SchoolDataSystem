@@ -1,15 +1,32 @@
-import { Column, Entity } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToOne,
+  JoinColumn,
+  OneToMany,
+  BeforeInsert,
+  ManyToOne,
+} from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 import { Max, Min } from 'class-validator';
+import { ParentsEntity } from '../parents/parents.entity'; // Importa la entidad ParentsEntity
 import { GroupsEntity } from '../groups/groups.entity';
-import { group } from 'console';
-import { ParentsEntity } from '../parents/parents.entity';
+
+export enum Status {
+  Abono = 'Abono',
+  Debe = 'Debe',
+  NoDebe = 'No debe',
+  Adelantado = 'Pago por adelantado',
+  Proximo = 'Proximo a pagar',
+}
 
 @Entity('students')
-export class Studetns extends GenericEntity {
+export class StudentsEntity extends GenericEntity {
   @Column()
   firstName: string;
 
+  @Column({ default: false })
+  multa: boolean;
 
   @Column()
   lastName: string;
@@ -64,20 +81,4 @@ export class Studetns extends GenericEntity {
 
   @ManyToOne(() => GroupsEntity, (group) => group.students)
   group: GroupsEntity;
-
-  // enum status
-
-  // one to one relation
 }
-function OneToOne(arg0: () => any, arg1: (parent: any) => any): (target: Studetns, propertyKey: "parents") => void {
-  throw new Error('Function not implemented.');
-}
-
-function JoinColumn(): (target: Studetns, propertyKey: "parents") => void {
-  throw new Error('Function not implemented.');
-}
-
-function ManyToOne(arg0: () => typeof GroupsEntity, arg1: (group: any) => any): (target: Studetns, propertyKey: "group") => void {
-  throw new Error('Function not implemented.');
-}
-

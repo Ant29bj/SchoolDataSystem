@@ -1,6 +1,7 @@
 import { Column, Entity } from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
-import {Studetns} from '../students/students.entity';
+import {StudentsEntity, /*Studetns*/} from '../students/students.entity';
+import { TeachersEntity } from '../teachers/teachers.entity';
 
 @Entity()
 export class GroupsEntity extends GenericEntity {
@@ -20,3 +21,11 @@ export class GroupsEntity extends GenericEntity {
 
 
 }
+function ManyToOne(arg0: () => typeof TeachersEntity, arg1: (teacher: any) => any): (target: GroupsEntity, propertyKey: "teacher") => void {
+  throw new Error('Function not implemented.');
+}
+
+function OneToMany(arg0: () => typeof StudentsEntity, arg1: (student: any) => any): (target: GroupsEntity, propertyKey: "students") => void {
+  throw new Error('Function not implemented.');
+}
+

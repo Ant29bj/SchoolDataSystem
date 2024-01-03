@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { ParentsService } from './parents.service';
 import { ParentsEntity } from './parents.entity';
@@ -32,9 +31,3 @@ export class ParentsController {
     return this.parentsService.remove(id);
   }
 }
-=======
-import { Controller } from '@nestjs/common';
-
-@Controller('parents')
-export class ParentsController {}
->>>>>>> 2c898e8 (tablas creadas falta relaciones)

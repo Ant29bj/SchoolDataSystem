@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DirectiosEntity } from './directions.entity';
+import { DirectionsEntity } from './directions.entity';
 import { CreateDirectionsDto } from './dto/create-directions.dto';
 
 import { UpdateDirectionDto } from './dto/update-direction.dto';
@@ -11,7 +11,7 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class DirectionsService {
 
-    constructor(@InjectRepository(DirectiosEntity) private directionRepository : Repository<DirectiosEntity> ) {}
+    constructor(@InjectRepository(DirectionsEntity) private directionRepository : Repository<DirectionsEntity> ) {}
 
     createDirections(directions: CreateDirectionsDto) {
         const newDirection = this.directionRepository.create(directions)

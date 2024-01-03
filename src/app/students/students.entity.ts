@@ -3,39 +3,30 @@ import { GenericEntity } from '../generics/generic.entity';
 import { Max, Min } from 'class-validator';
 import { GroupsEntity } from '../groups/groups.entity';
 import { group } from 'console';
+import { ParentsEntity } from '../parents/parents.entity';
 
 @Entity('students')
 export class Studetns extends GenericEntity {
   @Column()
   firstName: string;
 
->>>>>>> 2c898e8 (tablas creadas falta relaciones)
+
   @Column()
   lastName: string;
 
   @Column({ type: 'timestamp' })
   registrationDate: Date;
 
-<<<<<<< HEAD
   @Column({ unique: true })
   matricula?: string;
 
   @Column({ unique: true, width: 18 })
   curp: string;
-=======
-  // aun falta definir el formato de la matricula
-  @Column()
-  matricula: string;
->>>>>>> 2c898e8 (tablas creadas falta relaciones)
 
   @Column({ length: 10 })
   phone: string;
 
-<<<<<<< HEAD
   @Column({ type: 'money', default: 590 })
-=======
-  @Column({ type: 'money' })
->>>>>>> 2c898e8 (tablas creadas falta relaciones)
   @Min(590)
   @Max(990)
   amount: number;
@@ -49,26 +40,17 @@ export class Studetns extends GenericEntity {
   @Column()
   birthDay: Date;
 
-<<<<<<< HEAD
   @Column({ type: 'float', default: 0 })
-=======
-  @Column({ type: 'float' })
->>>>>>> 2c898e8 (tablas creadas falta relaciones)
   @Min(0)
   @Max(10)
   grade: number;
 
-<<<<<<< HEAD
   @Column({ type: 'money', default: 590 })
-=======
-  @Column({ type: 'money' })
->>>>>>> 2c898e8 (tablas creadas falta relaciones)
   debt: number;
 
   @Column()
   paymentDate: Date;
 
-<<<<<<< HEAD
   @Column({ nullable: true, default: Status.Debe })
   status: Status;
 
@@ -82,14 +64,20 @@ export class Studetns extends GenericEntity {
 
   @ManyToOne(() => GroupsEntity, (group) => group.students)
   group: GroupsEntity;
-=======
+
   // enum status
 
   // one to one relation
-  @Column()
-  direction: string;
-
-  // OneToMany
-  @Column()
-  paretns: string;
 }
+function OneToOne(arg0: () => any, arg1: (parent: any) => any): (target: Studetns, propertyKey: "parents") => void {
+  throw new Error('Function not implemented.');
+}
+
+function JoinColumn(): (target: Studetns, propertyKey: "parents") => void {
+  throw new Error('Function not implemented.');
+}
+
+function ManyToOne(arg0: () => typeof GroupsEntity, arg1: (group: any) => any): (target: Studetns, propertyKey: "group") => void {
+  throw new Error('Function not implemented.');
+}
+

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import {
   Controller,
   Get,
@@ -103,9 +102,3 @@ export class StudentsController extends GenericController<
     return this.studentsService.find({ where: { status: Status.Proximo } });
   }
 }
-=======
-import { Controller } from '@nestjs/common';
-
-@Controller('students')
-export class StudentsController {}
->>>>>>> 2c898e8 (tablas creadas falta relaciones)

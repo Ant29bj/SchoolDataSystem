@@ -1,17 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-<<<<<<< HEAD
-
-@Module({
-  imports: [],
-  controllers: [AppController],
-=======
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ParentsController } from './app/parents/parents.controller';
-import { TeachersController } from './app/teachers/teachers.controller';
-import { GroupsController } from './app/groups/groups.controller';
-import { StudentsController } from './app/students/students.controller';
+import { ParentsModule } from './app/parents/parents.module';
+import { DirectionsModule } from './app/directions/directions.module';
+import { TeachersModule } from './app/teachers/teachers.module';
+import { GroupsModule } from './app/groups/groups.module';
+import { StudentsModule } from './app/students/students.module';
+import { UsersModule } from './app/users/users.module';
+import { EmpleadosModule } from './app/empleados/empleados.module';
 import { PayrollMoudle } from './app/payroll/payroll.module';
 
 @Module({
@@ -26,19 +23,16 @@ import { PayrollMoudle } from './app/payroll/payroll.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-
-    PayrollMoudle,
+    ParentsModule,
     DirectionsModule,
-  ],
-  controllers: [
-    AppController,
-    DirectionsController,
-    ParentsController,
-    TeachersController,
-    GroupsController,
-    StudentsController,
+    GroupsModule,
+    StudentsModule,
+    TeachersModule,
+    UsersModule,
+    EmpleadosModule,
     PayrollMoudle,
   ],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

@@ -1,24 +1,70 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Put,
+  HttpException,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { GroupsService } from './groups.service';
 import { GroupsEntity } from './groups.entity';
-import { ApiBody } from '@nestjs/swagger';
+import { TeachersService } from '../teachers/teachers.service';
 import { CreateGroupDto } from './dto/create-group.dto';
-import { GenericController } from '../generics/generic.controller';
+import { NotFoundError, scheduled } from 'rxjs';
 
 @Controller('groups')
-export class GroupsController extends GenericController<GroupsEntity,GroupsService>{
-  constructor(private readonly groupsService: GroupsService) {super(groupsService)}
+export class GroupsController {
+  constructor(
+    private readonly groupsService: GroupsService,
+    private readonly teacherService: TeachersService,
+  ) {}
 
-  @ApiBody({type: CreateGroupDto, required: true})
-  @Post()
-  override async create(@Body() group: CreateGroupDto){
-    return this.groupsService.create(group);
+  @Get()
+  findAll(): Promise<GroupsEntity[]> {
+    return this.groupsService.findAll({ relations: ['teacher', 'students'] });
   }
-  @ApiBody({type: CreateGroupDto, required: true})
+
+  @Get(':id')
+  findOne(@Param('id') id: number): Promise<GroupsEntity> {
+    return this.groupsService.findOne(id);
+  }
+
+  @Post()
+  async create(@Body() group: CreateGroupDto): Promise<GroupsEntity> {
+    const teacher = await this.teacherService.findOneById(group.teacher);
+
+    if (!teacher) {
+      throw new NotFoundException('No existe maestro');
+    }
+
+    const nombreGrupo = `${group.schedule} ${teacher.firstName}`;
+
+    const newGroup = new GroupsEntity(group.schedule, nombreGrupo, teacher);
+
+    const confirmGroup = await this.groupsService.findOneBy({
+      name: newGroup.name,
+    });
+
+    if (confirmGroup) {
+      throw new ConflictException('El grupo ya existe.');
+    }
+    return this.groupsService.create(newGroup);
+  }
+
   @Put(':id')
-  override async update(@Param('id') id: number, @Body() group: GroupsEntity){
+  update(
+    @Param('id') id: number,
+    @Body() group: GroupsEntity,
+  ): Promise<GroupsEntity> {
     return this.groupsService.update(id, group);
   }
 
-
+  @Delete(':id')
+  remove(@Param('id') id: string): Promise<void> {
+    return this.groupsService.remove(id);
+  }
 }

@@ -1,4 +1,4 @@
 export class CreateGroupDto {
-    schedule: string
-    name: string
+  schedule: string;
+  teacher: number;
 }

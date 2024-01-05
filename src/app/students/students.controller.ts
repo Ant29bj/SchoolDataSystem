@@ -37,7 +37,6 @@ export class StudentsController extends GenericController<
   @ApiBody({ type: CreateStudentDto, required: true })
   @Post()
   override async create(@Body() newStudent: StudentsEntity) {
-    console.log(newStudent.birthDay);
     const year = new Date(newStudent.birthDay).getUTCFullYear().toString();
     const mes = new Date(newStudent.birthDay).getUTCMonth() + 1;
     newStudent.matricula = `${year}${mes}${newStudent.curp.substring(
@@ -90,9 +89,11 @@ export class StudentsController extends GenericController<
       new HttpException('Datos incompletos', HttpStatus.BAD_REQUEST);
 
     try {
-      await this.studentsService.abonarMensualidad(matricula, pago);
-      return { message: 'Operacion exitosa' };
+      // this.studentsService.abonarMensualidad(matricula, pago);
+      // return { message: 'Operacion exitosa' };
+      return await this.studentsService.abonarMensualidad(matricula, pago);
     } catch (err) {
+      console.log('entro');
       return err;
     }
   }

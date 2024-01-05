@@ -62,7 +62,7 @@ export class StudentsEntity extends GenericEntity {
   @Max(10)
   grade: number;
 
-  @Column({ type: 'money', default: 590 })
+  @Column({ type: 'money', default: 1700 })
   debt: number;
 
   @Column()

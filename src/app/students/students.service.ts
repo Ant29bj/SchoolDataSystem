@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, LessThan, Between, IsNull, MoreThan } from 'typeorm';
 import { Status, StudentsEntity } from './students.entity';
 import { GenericService } from '../generics/generic.service';
+import { log } from 'console';
 
 // Agregar historial de pago del alumno
 
@@ -76,9 +77,8 @@ export class StudentsService
   iniciarRevisionPagos() {
     const fecha = new Date();
     const horario = new Date(fecha);
-    horario.setHours(10, 53, 0, 0); // hora las 11:59 de la noche
+    horario.setHours(23, 50, 0, 0); // hora las 11:59 de la noche
     const intervalo = 24 * 60 * 60 * 1000;
-    console.log('entro');
 
     let restanteDeTiempo = horario.getTime() - fecha.getTime();
 
@@ -100,25 +100,29 @@ export class StudentsService
         matricula: matricula,
       },
     });
-    // queda pendiente de como calcular la siguiente fecha de pago
+
+    let deudaTransformada: any = auxStudent.debt;
+
+    if (typeof deudaTransformada === 'string') {
+      console.log('entro');
+      deudaTransformada = parseFloat(deudaTransformada.replace('$', ''));
+    }
+
     if (auxStudent) {
-      auxStudent.debt -= pago;
+      deudaTransformada -= pago;
       if (auxStudent.debt == 0) {
         auxStudent.status = Status.NoDebe;
       } else if (auxStudent.debt > 0) {
         auxStudent.status = Status.Debe;
       }
       auxStudent.paymentDate = sigPago;
-      await this.studentsRepository.save(auxStudent);
+      auxStudent.debt = deudaTransformada;
+      return this.studentsRepository.save(auxStudent);
     } else {
       throw new HttpException('Alumno no encontrado', HttpStatus.NOT_FOUND);
     }
   }
 
-  generarMatricula(data: StudentsEntity): string {
-    console.log(data.birthDay.getMonth);
-    return '';
-  }
   // descuento pogo por a delantado minimo 20%
 
   generateRandomChars(length: number): string {

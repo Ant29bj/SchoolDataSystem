@@ -1,27 +1,42 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, ParseIntPipe, Delete, Patch } from '@nestjs/common';
+import { CreateDirectionsDto } from './dto/create-directions.dto';
 import { DirectionsService } from './directions.service';
 import { DirectionsEntity } from './directions.entity';
-import { CreateDirectionDto } from './dto/create-direction.dto';
-import { ApiBody } from '@nestjs/swagger';
-import { Entity } from 'typeorm';
-import { GenericController } from '../generics/generic.controller';
-import { Direction } from 'readline';
+import { UpdateDirectionDto } from './dto/update-direction.dto';
+
+
+
 
 @Controller('directions')
-export class DirectionsController extends GenericController<DirectionsEntity, DirectionsService>{
-  constructor(private readonly directionsService: DirectionsService) {super(directionsService)}
+export class DirectionsController {
 
+    constructor( private  directionsService: DirectionsService) {}
 
-  @ApiBody({type: CreateDirectionDto, required: true})
-  @Post()
-  override async create(@Body() entity: DirectionsEntity) {
-    return this.directionsService.create(entity);
-  }
+    @Get()
+    getDirections(): Promise<DirectionsEntity[]> {
+        return this.directionsService.getDirections();
+    }
 
-  @ApiBody({type: CreateDirectionDto, required: true})
-  @Put(':id')
-  override async update(@Param('id') id: number, @Body() direction: DirectionsEntity) {
-    return this.directionsService.update(id, direction);
-  }
+    @Get(':id')
+    getDirection(@Param('id', ParseIntPipe) id: number) {
+        return this.directionsService.getDirection(id);
+    }
+
+    @Post()
+    createDirections (@Body() newDirection: CreateDirectionsDto): Promise<DirectionsEntity> {
+        return this.directionsService.createDirections(newDirection);
+    }
+
+    @Delete(':id')
+    deleteDirection(@Param('id', ParseIntPipe) id: number) {
+        return this.directionsService.deleteDirection(id)
+    }
+
+    @Patch('id:') 
+    updateDirection(@Param('id', ParseIntPipe) id: number, @Body()
+    direction: UpdateDirectionDto) {
+        return this.directionsService.updateDirection(id, direction)
+        
+    }
 
 }

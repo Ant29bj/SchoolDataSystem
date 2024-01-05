@@ -1,4 +1,6 @@
 export class UpdateGroupDto {
-    schedule: string
-    name: string
+    day: string;
+    schedule: string;
+    name: string;
+    teacher: string;
 }

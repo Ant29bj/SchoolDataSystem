@@ -40,7 +40,7 @@ export class GroupsService {
     return await this.groupsRepository.findOne({ where: { id } });
   }
   async findOneWithRelations(id: string): Promise<GroupsEntity | undefined> {
-    return getRepository(GroupsEntity)
+    return this.groupsRepository
       .createQueryBuilder('group')
       .leftJoinAndSelect('group.students', 'students')
       .where('group.id = :id', { id })

@@ -1,26 +1,22 @@
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 import { TeachersEntity } from '../teachers/teachers.entity';
 import { StudentsEntity } from '../students/students.entity';
 
-
-
 @Entity('groups')
 export class GroupsEntity extends GenericEntity {
-  constructor(schedule: string, name: string, teacher: TeachersEntity, day: string) {
+  constructor(
+    schedule: string,
+    name: string,
+    teacher: TeachersEntity,
+    day: string,
+  ) {
     super();
     this.name = name;
     this.day = day;
     this.schedule = schedule;
     this.teacher = teacher;
-  }  
-  
- 
+  }
 
   @Column({ type: 'time' })
   schedule: string;
@@ -28,9 +24,9 @@ export class GroupsEntity extends GenericEntity {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   day: string;
-  
+
   @ManyToOne(() => TeachersEntity, (teacher) => teacher.id)
   teacher: TeachersEntity;
 

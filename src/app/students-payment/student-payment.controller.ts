@@ -74,10 +74,7 @@ export class StudentPaymentController extends GenericController<
     @Query('matricula') matricula: string,
     @Body() requestBody: CreatePaymentDto,
   ) {
-    const student = await this.studentService.pagarInscripcion(
-      matricula,
-      requestBody.importe,
-    );
+    await this.studentService.pagarInscripcion(matricula, requestBody.importe);
 
     const estudianteAsignar = await this.studentService.findOne({
       where: {

@@ -8,126 +8,150 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, LessThan, Between, IsNull, MoreThan } from 'typeorm';
 import { Status, StudentsEntity } from './students.entity';
 import { GenericService } from '../generics/generic.service';
-import { log } from 'console';
+import { Cron } from '@nestjs/schedule';
+import { TransformarDeuda } from './utlis/transform-type-money';
 
 // Agregar historial de pago del alumno
+const IMPORTE_MENSUALIDAD: number = 760;
+const IMPORTE_MULTA: number = 80;
+const DIA_MES: number = 28;
 
 @Injectable()
-export class StudentsService
-  extends GenericService<StudentsEntity>
-  implements OnModuleInit
-{
-  private intervalo: NodeJS.Timeout;
+export class StudentsService extends GenericService<StudentsEntity> {
   constructor(
     @InjectRepository(StudentsEntity)
     private readonly studentsRepository: Repository<StudentsEntity>,
   ) {
     super(studentsRepository);
   }
-
-  async onModuleInit() {
-    this.iniciarRevisionPagos();
+  // mm:HH:dd:MM:dw
+  @Cron('59 23 * * *')
+  async handleActualizarEstudiantesMensual() {
+    this.renovarMensualidad();
+    this.updateAlumnos();
   }
-  private async revisarDeudasDePago() {
-    const currentDay = new Date();
 
-    await this.studentsRepository.update(
-      { paymentDate: LessThan(currentDay) },
-      { status: Status.Debe },
-    );
-
-    const tresDias = new Date(currentDay);
-    tresDias.setDate(currentDay.getDate() - 3);
-
-    await this.studentsRepository.update(
-      { paymentDate: LessThan(tresDias), multa: false },
-      { debt: () => 'debt + CAST(80 AS money)' },
-    );
-
-    await this.studentsRepository.update(
-      { status: IsNull(), debt: MoreThan(0) },
-      { status: Status.Debe },
-    );
-
-    const unaSemanaFuturo = new Date(currentDay);
-    unaSemanaFuturo.setDate(unaSemanaFuturo.getDate() - 7);
-    const estudiantesPorPagar = await this.studentsRepository.find({
+  async renovarMensualidad() {
+    const fechaActual = new Date();
+    const fechaDentroUnMes = new Date(fechaActual);
+    const students = await this.studentsRepository.find({
       where: {
-        paymentDate: Between(currentDay, unaSemanaFuturo),
+        paymentDate: fechaActual,
       },
     });
+    if (students.length === 0) return;
 
-    for (const student of estudiantesPorPagar) {
-      student.status = Status.Proximo;
-      await this.studentsRepository.save(student);
+    fechaDentroUnMes.setDate(fechaDentroUnMes.getDate() + 28);
+    for (const student of students) {
+      let deudaTransformada = TransformarDeuda(student.debt);
+      deudaTransformada += IMPORTE_MENSUALIDAD;
+      if (deudaTransformada <= student.sobrePago) {
+        student.sobrePago -= deudaTransformada;
+        student.debt = 0;
+      } else {
+        deudaTransformada -= student.sobrePago;
+        student.sobrePago = 0;
+        student.debt = deudaTransformada;
+      }
+
+      if (student.debt > 0) {
+        student.status = Status.Debe;
+      } else if (student.sobrePago > 0) {
+        student.status = Status.Adelantado;
+      } else if (student.sobrePago === 0 && student.debt === 0) {
+        student.paymentDate = fechaDentroUnMes;
+        student.status = Status.NoDebe;
+      }
+
+      await this.update(student.id, student);
     }
-    // const estudiantesSobregirados = await this.studentsRepository.find({
-    //   where: {
-    //     paymentDate: LessThan(currentDay),
-    //   },
-    // });
-
-    // for (const student of estudiantesSobregirados) {
-    //   student.status = Status.Debe;
-
-    //   await this.studentsRepository.save(student);
-    // }
   }
 
-  iniciarRevisionPagos() {
-    const fecha = new Date();
-    const horario = new Date(fecha);
-    horario.setHours(23, 50, 0, 0); // hora las 11:59 de la noche
-    const intervalo = 24 * 60 * 60 * 1000;
+  async updateAlumnos() {
+    const fechaActual = new Date();
+    const students = await this.find({
+      where: {
+        paymentDate: LessThan(fechaActual),
+      },
+    });
+    if (students.length === 0) return;
 
-    let restanteDeTiempo = horario.getTime() - fecha.getTime();
+    for (const student of students) {
+      const diffMilis = fechaActual.getTime() - student.paymentDate.getTime();
+      const diffDias = diffMilis / (1000 * 60 * 60 * 24);
+      const deuda = TransformarDeuda(student.debt);
 
-    if (restanteDeTiempo < 0) {
-      restanteDeTiempo += intervalo;
+      if (student.multas < 3 && diffDias > 3 && deuda > 0) {
+        student.debt = deuda + IMPORTE_MULTA;
+        student.multas += 1;
+      }
+      student.status = Status.Debe;
+      await this.update(student.id, student);
     }
-
-    this.intervalo = setInterval(
-      () => this.revisarDeudasDePago(),
-      restanteDeTiempo,
-    );
   }
 
   async abonarMensualidad(matricula: string, pago: number) {
-    const sigPago = new Date(); // yyyy/MM/dd:hr:min:seg:mil
-    sigPago.setDate(sigPago.getDate() + 28);
-    const auxStudent = await this.studentsRepository.findOne({
+    const student = await this.studentsRepository.findOne({
       where: {
         matricula: matricula,
       },
     });
 
-    let deudaTransformada: any = auxStudent.debt;
+    student.sobrePago += pago;
+    let deuda = TransformarDeuda(student.debt);
 
-    if (typeof deudaTransformada === 'string') {
-      console.log('entro');
-      deudaTransformada = parseFloat(deudaTransformada.replace('$', ''));
+    if (student.sobrePago > deuda) {
+      student.sobrePago -= deuda;
+      student.debt = 0;
+    } else if (student.sobrePago <= deuda) {
+      deuda -= student.sobrePago;
+      student.sobrePago = 0;
+      student.debt = deuda;
     }
 
-    if (auxStudent) {
-      deudaTransformada -= pago;
-      if (auxStudent.debt == 0) {
-        auxStudent.status = Status.NoDebe;
-      } else if (auxStudent.debt > 0) {
-        auxStudent.status = Status.Debe;
+    if (student.sobrePago > 0) {
+      const mesesAbonados = Math.trunc(student.sobrePago / IMPORTE_MENSUALIDAD);
+      const sigFechaPago = new Date(student.paymentDate);
+      sigFechaPago.setDate(student.paymentDate.getDate() + DIA_MES);
+      if (student.sobrePago >= IMPORTE_MENSUALIDAD) {
+        sigFechaPago.setDate(
+          student.paymentDate.getDate() + mesesAbonados * DIA_MES,
+        );
       }
-      auxStudent.paymentDate = sigPago;
-      auxStudent.debt = deudaTransformada;
-      return this.studentsRepository.save(auxStudent);
-    } else {
-      throw new HttpException('Alumno no encontrado', HttpStatus.NOT_FOUND);
+
+      student.paymentDate = sigFechaPago;
+      student.status = Status.Adelantado;
     }
+
+    if (student.debt == 0) {
+      const sigFechaPago = new Date(student.paymentDate);
+      sigFechaPago.setDate(student.paymentDate.getDate() + DIA_MES);
+      student.paymentDate = sigFechaPago;
+      student.status = Status.NoDebe;
+    }
+
+    return this.update(student.id, student);
   }
 
-  // descuento pogo por a delantado minimo 20%
+  async pagarInscripcion(matricula: string, pago: number) {
+    const student = await this.studentsRepository.findOne({
+      where: {
+        matricula: matricula,
+      },
+    });
+
+    if (student.inscripcion <= 0)
+      return new HttpException('Inscripcion pagada', HttpStatus.BAD_GATEWAY);
+
+    if (!student)
+      return new HttpException('Alumno not Found', HttpStatus.NOT_FOUND);
+
+    student.inscripcion -= pago;
+    return this.studentsRepository.save(student);
+  }
 
   generateRandomChars(length: number): string {
-    const chars =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let result = '';
     for (let i = 0; i < length; i++) {
       result += chars.charAt(Math.floor(Math.random() * chars.length));

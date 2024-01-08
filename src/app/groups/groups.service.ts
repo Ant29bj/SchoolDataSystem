@@ -5,6 +5,7 @@ import {
   FindOptions,
   FindOptionsWhere,
   Repository,
+  getRepository,
 } from 'typeorm';
 import { GroupsEntity } from './groups.entity';
 import { CreateGroupDto } from './dto/create-group.dto';
@@ -37,6 +38,13 @@ export class GroupsService {
   async update(id: number, group: GroupsEntity): Promise<GroupsEntity> {
     await this.groupsRepository.update(id, group);
     return await this.groupsRepository.findOne({ where: { id } });
+  }
+  async findOneWithRelations(id: string): Promise<GroupsEntity | undefined> {
+    return getRepository(GroupsEntity)
+      .createQueryBuilder('group')
+      .leftJoinAndSelect('group.students', 'students')
+      .where('group.id = :id', { id })
+      .getOne();
   }
 
   async remove(id: string): Promise<void> {

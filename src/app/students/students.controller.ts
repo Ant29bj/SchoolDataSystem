@@ -16,14 +16,7 @@ import { Status, StudentsEntity } from './students.entity';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { GenericController } from '../generics/generic.controller';
 import { ApiBody } from '@nestjs/swagger';
-import {
-  Between,
-  DeleteResult,
-  FindManyOptions,
-  FindOptionsWhere,
-} from 'typeorm';
-import { query } from 'express';
-import { log } from 'console';
+import { FindManyOptions } from 'typeorm';
 
 @Controller('students')
 export class StudentsController extends GenericController<
@@ -53,19 +46,37 @@ export class StudentsController extends GenericController<
     return this.studentsService.create(newStudent);
   }
 
-  @Get('/find')
-  async buscarStudent(@Query('options') options: string) {
-    return this.studentsService.find({ where: JSON.parse(options) });
-  }
-
   @Get()
-  override find(options?: FindManyOptions<StudentsEntity>) {
-    return this.studentsService.find({ relations: ['group'] });
+  override find(@Param() options?: FindManyOptions<StudentsEntity>) {
+    return this.studentsService.find({ relations: ['group', 'payments'] });
   }
 
-  @Get('/:cadena')
+  @Get('/matricula')
+  findOneByMatricula(@Query('matricula') matricula: string) {
+    return this.studentsService.findOne({
+      where: {
+        matricula: matricula,
+      },
+      relations: ['group', 'payments'],
+    });
+  }
+
+  @Get('/like/:cadena')
   findLike(@Param('cadena') cadena: string) {
     return this.studentsService.findLike(cadena);
+  }
+
+  @Get('/find')
+  async buscarStudent(@Query('options') options: string) {
+    return this.studentsService.find({
+      where: JSON.parse(options),
+      relations: ['payments'],
+    });
+  }
+
+  @Get('/proximos')
+  async mostrarProximos() {
+    return this.studentsService.find({ where: { status: Status.Proximo } });
   }
 
   @Put()
@@ -96,10 +107,5 @@ export class StudentsController extends GenericController<
       console.log('entro');
       return err;
     }
-  }
-
-  @Get('/proximos')
-  async mostrarProximos() {
-    return this.studentsService.find({ where: { status: Status.Proximo } });
   }
 }

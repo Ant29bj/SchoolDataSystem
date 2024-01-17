@@ -24,6 +24,6 @@ export class TeachersEntity extends GenericEntity {
 */
 
 
-  @OneToMany(() => GroupsEntity, (grupo) => grupo.teacher)
+  @ManyToOne(() => GroupsEntity, (grupo) => grupo.teacher)
   group: GroupsEntity[];
 }

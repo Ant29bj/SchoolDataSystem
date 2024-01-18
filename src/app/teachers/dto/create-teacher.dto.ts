@@ -4,5 +4,5 @@ export class CreateTeacherDto {
     firstName: string
     lastName: string
     phone: string
-    direccion: CreateDirectionDto
+    direccion: string
 }

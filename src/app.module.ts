@@ -13,11 +13,15 @@ import { PayrollMoudle } from './app/payroll/payroll.module';
 import { StudentPaymentModule } from './app/students-payment/student-payment.module';
 import { ScheduleModule } from '@nestjs/schedule';
 
+import { StudentPaymentModule } from './app/students-payment/student-payment.module';
+import { ScheduleModule } from '@nestjs/schedule';
+
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      username: 'root',
+      username: 'postgres',
       password: 'root',
       database: 'root',
       host: 'localhost',
@@ -39,4 +43,5 @@ import { ScheduleModule } from '@nestjs/schedule';
   controllers: [AppController],
   providers: [AppService],
 })
+
 export class AppModule {}

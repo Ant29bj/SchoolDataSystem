@@ -12,4 +12,15 @@ export class TeachersService extends GenericService<TeachersEntity> {
   ) {
     super(teachersRepository);
   }
+
+  findLike(cadena: string) {
+    return (
+      this.teachersRepository
+        .createQueryBuilder('teacher')
+        .where('teacher.firstName ILIKE :cadena', { cadena: `%${cadena}%` })
+        .orWhere('teacher.lastName ILIKE :cadena', { cadena: `%${cadena}%` })
+        // Agrega más campos según sea necesario
+        .getMany()
+    );
+  }
 }

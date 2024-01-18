@@ -15,7 +15,7 @@ export class TeachersEntity extends GenericEntity {
   phone: string;
   /*
 
-  @ManyToOne(() => DirectionsEntity, (direccion) => direccion.id)
+  @ManyToOne(() => DirectionsEntity, (direccion) => direccion.id) .
   direccion: DirectionsEntity;
 <<<<<<< HEAD
   
@@ -23,6 +23,7 @@ export class TeachersEntity extends GenericEntity {
   grupos: GroupsEntity[];
 */
 
-  @OneToMany(() => GroupsEntity, (grupo) => grupo.teacher)
-  grupos: GroupsEntity[];
+
+  @ManyToOne(() => GroupsEntity, (grupo) => grupo.teacher)
+  group: GroupsEntity[];
 }

@@ -24,7 +24,7 @@ export class GroupsEntity extends GenericEntity {
   @Column()
   name: string;
 
-  @Column({ nullable: true })
+  @Column()
   day: string;
 
   @ManyToOne(() => TeachersEntity, (teacher) => teacher.id)

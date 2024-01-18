@@ -1,4 +1,3 @@
-
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 import { TeachersEntity } from '../teachers/teachers.entity';
@@ -12,7 +11,6 @@ export class GroupsEntity extends GenericEntity {
     teacher: TeachersEntity,
     day: string,
   ) {
-
     super();
     this.name = name;
     this.day = day;
@@ -27,7 +25,6 @@ export class GroupsEntity extends GenericEntity {
   name: string;
 
   @Column()
-
   day: string;
 
   @ManyToOne(() => TeachersEntity, (teacher) => teacher.id)

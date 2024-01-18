@@ -13,9 +13,12 @@ export class TeachersEntity extends GenericEntity {
 
   @Column({ length: 10 })
   phone: string;
+
+  @Column()
+  direccion: string;
   /*
 
-  @ManyToOne(() => DirectionsEntity, (direccion) => direccion.id)
+  @ManyToOne(() => DirectionsEntity, (direccion) => direccion.id) .
   direccion: DirectionsEntity;
 <<<<<<< HEAD
   
@@ -23,6 +26,6 @@ export class TeachersEntity extends GenericEntity {
   grupos: GroupsEntity[];
 */
 
-  @OneToMany(() => GroupsEntity, (grupo) => grupo.teacher)
-  grupos: GroupsEntity[];
+  @ManyToOne(() => GroupsEntity, (grupo) => grupo.teacher)
+  group: GroupsEntity[];
 }

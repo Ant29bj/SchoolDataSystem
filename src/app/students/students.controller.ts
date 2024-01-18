@@ -1,5 +1,3 @@
-
-
 import {
   Controller,
   Get,
@@ -18,14 +16,7 @@ import { Status, StudentsEntity } from './students.entity';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { GenericController } from '../generics/generic.controller';
 import { ApiBody } from '@nestjs/swagger';
-import {
-  Between,
-  DeleteResult,
-  FindManyOptions,
-  FindOptionsWhere,
-} from 'typeorm';
-import { query } from 'express';
-import { log } from 'console';
+import { FindManyOptions } from 'typeorm';
 
 @Controller('students')
 export class StudentsController extends GenericController<
@@ -39,7 +30,6 @@ export class StudentsController extends GenericController<
   @ApiBody({ type: CreateStudentDto, required: true })
   @Post()
   override async create(@Body() newStudent: StudentsEntity) {
-    console.log(newStudent.birthDay);
     const year = new Date(newStudent.birthDay).getUTCFullYear().toString();
     const mes = new Date(newStudent.birthDay).getUTCMonth() + 1;
     newStudent.matricula = `${year}${mes}${newStudent.curp.substring(
@@ -56,19 +46,37 @@ export class StudentsController extends GenericController<
     return this.studentsService.create(newStudent);
   }
 
-  @Get('/find')
-  async buscarStudent(@Query('options') options: string) {
-    return this.studentsService.find({ where: JSON.parse(options) });
-  }
-
   @Get()
-  override find(options?: FindManyOptions<StudentsEntity>) {
-    return this.studentsService.find({ relations: ['group'] });
+  override find(@Param() options?: FindManyOptions<StudentsEntity>) {
+    return this.studentsService.find({ relations: ['group', 'payments'] });
   }
 
-  @Get('/:cadena')
+  @Get('/matricula')
+  findOneByMatricula(@Query('matricula') matricula: string) {
+    return this.studentsService.findOne({
+      where: {
+        matricula: matricula,
+      },
+      relations: ['group', 'payments'],
+    });
+  }
+
+  @Get('/like/:cadena')
   findLike(@Param('cadena') cadena: string) {
     return this.studentsService.findLike(cadena);
+  }
+
+  @Get('/find')
+  async buscarStudent(@Query('options') options: string) {
+    return this.studentsService.find({
+      where: JSON.parse(options),
+      relations: ['payments'],
+    });
+  }
+
+  @Get('/proximos')
+  async mostrarProximos() {
+    return this.studentsService.find({ where: { status: Status.Proximo } });
   }
 
   @Put()
@@ -92,15 +100,12 @@ export class StudentsController extends GenericController<
       new HttpException('Datos incompletos', HttpStatus.BAD_REQUEST);
 
     try {
-      await this.studentsService.abonarMensualidad(matricula, pago);
-      return { message: 'Operacion exitosa' };
+      // this.studentsService.abonarMensualidad(matricula, pago);
+      // return { message: 'Operacion exitosa' };
+      return await this.studentsService.abonarMensualidad(matricula, pago);
     } catch (err) {
+      console.log('entro');
       return err;
     }
-  }
-
-  @Get('/proximos')
-  async mostrarProximos() {
-    return this.studentsService.find({ where: { status: Status.Proximo } });
   }
 }

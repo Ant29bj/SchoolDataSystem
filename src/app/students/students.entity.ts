@@ -11,6 +11,7 @@ import { GenericEntity } from '../generics/generic.entity';
 import { Max, Min } from 'class-validator';
 import { ParentsEntity } from '../parents/parents.entity'; // Importa la entidad ParentsEntity
 import { GroupsEntity } from '../groups/groups.entity';
+import { StudentPayment } from '../students-payment/student-payment.entity';
 
 export enum Status {
   Abono = 'Abono',
@@ -20,13 +21,13 @@ export enum Status {
   Proximo = 'Proximo a pagar',
 }
 
+const MENSUALIDAD_IMPORTE = 760;
+const INSCRIPCION_IMPORT = 1700;
+
 @Entity('students')
 export class StudentsEntity extends GenericEntity {
   @Column()
   firstName: string;
-
-  @Column({ default: false })
-  multa: boolean;
 
   @Column()
   lastName: string;
@@ -43,10 +44,13 @@ export class StudentsEntity extends GenericEntity {
   @Column({ length: 10 })
   phone: string;
 
-  @Column({ type: 'money', default: 590 })
-  @Min(590)
-  @Max(990)
-  amount: number;
+  // @Column({ type: 'money', default: 760 })
+  // @Min(590)
+  // @Max(990)
+  // amount: number;
+
+  @Column({ default: 0 })
+  multas: number;
 
   @Column()
   email: string;
@@ -62,7 +66,13 @@ export class StudentsEntity extends GenericEntity {
   @Max(10)
   grade: number;
 
-  @Column({ type: 'money', default: 590 })
+  @Column({ default: 0 })
+  sobrePago: number;
+
+  @Column({ default: INSCRIPCION_IMPORT })
+  inscripcion: number;
+
+  @Column({ type: 'money', default: MENSUALIDAD_IMPORTE })
   debt: number;
 
   @Column()
@@ -81,4 +91,7 @@ export class StudentsEntity extends GenericEntity {
 
   @ManyToOne(() => GroupsEntity, (group) => group.students)
   group: GroupsEntity;
+
+  @OneToMany(() => StudentPayment, (payment) => payment.student)
+  payments: StudentPayment[];
 }

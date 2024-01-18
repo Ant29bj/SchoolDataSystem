@@ -10,6 +10,8 @@ import { StudentsModule } from './app/students/students.module';
 import { UsersModule } from './app/users/users.module';
 import { EmpleadosModule } from './app/empleados/empleados.module';
 import { PayrollMoudle } from './app/payroll/payroll.module';
+import { StudentPaymentModule } from './app/students-payment/student-payment.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 import { StudentPaymentModule } from './app/students-payment/student-payment.module';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -27,9 +29,7 @@ import { ScheduleModule } from '@nestjs/schedule';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-
     ScheduleModule.forRoot(),
-
     ParentsModule,
     DirectionsModule,
     GroupsModule,
@@ -38,13 +38,10 @@ import { ScheduleModule } from '@nestjs/schedule';
     UsersModule,
     EmpleadosModule,
     PayrollMoudle,
-
     StudentPaymentModule,
-
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 
 export class AppModule {}
-

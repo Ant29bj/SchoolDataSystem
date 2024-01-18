@@ -140,6 +140,11 @@ export class StudentsService extends GenericService<StudentsEntity> {
       },
     });
 
+    if (student.inscripcion == 0) {
+      return '';
+    }
+
+
     if (student.inscripcion <= 0)
       return new HttpException('Inscripcion pagada', HttpStatus.BAD_GATEWAY);
 
@@ -147,7 +152,8 @@ export class StudentsService extends GenericService<StudentsEntity> {
       return new HttpException('Alumno not Found', HttpStatus.NOT_FOUND);
 
     student.inscripcion -= pago;
-    return this.studentsRepository.save(student);
+
+    return this.studentsRepository.update(student.id, student);
   }
 
   generateRandomChars(length: number): string {

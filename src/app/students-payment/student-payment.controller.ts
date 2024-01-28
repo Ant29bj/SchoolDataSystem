@@ -4,7 +4,6 @@ import {
   Get,
   HttpException,
   HttpStatus,
-  Param,
   Post,
   Query,
 } from '@nestjs/common';
@@ -35,6 +34,11 @@ export class StudentPaymentController extends GenericController<
     return this.studentPaymentServie.find({ relations: ['student'] });
   }
 
+  @Get('/corte')
+  async getIfCorteNull() {
+    return this.studentPaymentServie.getByCorte();
+  }
+
   @Post('/mensualidad')
   async createPayment(
     @Query('matricula') matricula: string,
@@ -52,7 +56,7 @@ export class StudentPaymentController extends GenericController<
 
     this.studentService.abonarMensualidad(matricula, requestBody.importe);
 
-    const alumnoModificado = await await this.studentService.findOne({
+    const alumnoModificado = await this.studentService.findOne({
       where: {
         matricula: matricula,
       },

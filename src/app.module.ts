@@ -12,6 +12,8 @@ import { EmpleadosModule } from './app/empleados/empleados.module';
 import { PayrollMoudle } from './app/payroll/payroll.module';
 import { StudentPaymentModule } from './app/students-payment/student-payment.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { CorteController } from './app/corte/corte.controller';
+import { CorteModule } from './app/corte/corte.module';
 
 @Module({
   imports: [
@@ -35,6 +37,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     EmpleadosModule,
     PayrollMoudle,
     StudentPaymentModule,
+    CorteModule,
   ],
   controllers: [AppController],
   providers: [AppService],

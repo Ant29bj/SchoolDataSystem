@@ -6,7 +6,6 @@ import {
   Param,
   Delete,
   Put,
-  HttpException,
   ConflictException,
   NotFoundException,
 } from '@nestjs/common';
@@ -14,7 +13,6 @@ import { GroupsService } from './groups.service';
 import { GroupsEntity } from './groups.entity';
 import { TeachersService } from '../teachers/teachers.service';
 import { CreateGroupDto } from './dto/create-group.dto';
-import { UpdateGroupDto } from './dto/update-group-dto';
 
 @Controller('groups')
 export class GroupsController {
@@ -33,7 +31,6 @@ export class GroupsController {
 
   @Post()
   async create(@Body() group: CreateGroupDto): Promise<GroupsEntity> {
-    console.log(group);
     const teacher = await this.teacherService.findOneById(group.teacher);
 
     if (!teacher) {
@@ -67,24 +64,28 @@ export class GroupsController {
 
     if (group.teacher) {
       const teacher = await this.teacherService.findOneById(group.teacher);
-  
+
       if (!teacher) {
         throw new NotFoundException('No existe maestro');
       }
-  
+
       // Construir el nuevo nombre del grupo con el nuevo profesor
       const nombreGrupo = `${group.day} ${group.schedule} ${teacher.firstName}`;
       group.name = nombreGrupo;
     } else {
       // Si no se proporciona un nuevo profesor, usar el nombre existente o construirlo nuevamente
-      group.name = group.name || `${group.day} ${group.schedule} ${existingGroup.teacher?.firstName || ''}`;
+      group.name =
+        group.name ||
+        `${group.day} ${group.schedule} ${
+          existingGroup.teacher?.firstName || ''
+        }`;
     }
-  
+
     const updatedGroup = await this.groupsService.update(id, group);
-  
+
     // Actualizar el nombre del grupo en el objeto de respuesta
     updatedGroup.name = group.name;
-  
+
     return updatedGroup;
   }
 

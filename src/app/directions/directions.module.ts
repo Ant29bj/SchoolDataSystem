@@ -7,6 +7,6 @@ import { DirectionsEntity } from './directions.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([DirectionsEntity])],
   controllers: [DirectionsController],
-  providers: [DirectionsService]
+  providers: [DirectionsService],
 })
 export class DirectionsModule {}

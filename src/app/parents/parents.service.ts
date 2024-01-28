@@ -15,7 +15,7 @@ export class ParentsService {
   }
 
   findOne(id: number): Promise<ParentsEntity> {
-    return this.parentsRepository.findOne({where: {id} });
+    return this.parentsRepository.findOne({ where: { id } });
   }
 
   async create(parent: ParentsEntity): Promise<ParentsEntity> {
@@ -25,7 +25,7 @@ export class ParentsService {
 
   async update(id: number, parent: ParentsEntity): Promise<ParentsEntity> {
     await this.parentsRepository.update(id, parent);
-    return await this.parentsRepository.findOne({where: {id} });
+    return await this.parentsRepository.findOne({ where: { id } });
   }
 
   async remove(id: string): Promise<void> {

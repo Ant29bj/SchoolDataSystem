@@ -1,9 +1,4 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  OnModuleInit,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, LessThan, Between, IsNull, MoreThan } from 'typeorm';
 import { Status, StudentsEntity } from './students.entity';
@@ -143,7 +138,6 @@ export class StudentsService extends GenericService<StudentsEntity> {
     if (student.inscripcion == 0) {
       return '';
     }
-
 
     if (student.inscripcion <= 0)
       return new HttpException('Inscripcion pagada', HttpStatus.BAD_GATEWAY);

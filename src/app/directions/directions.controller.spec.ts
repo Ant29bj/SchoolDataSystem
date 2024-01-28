@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DirectionsController } from './directions.controller';
 import { DirectionsService } from './directions.service';
 
-
 describe('DirectionsController', () => {
   let controller: DirectionsController;
 
@@ -11,7 +10,6 @@ describe('DirectionsController', () => {
       controllers: [DirectionsController],
 
       providers: [DirectionsService],
-
     }).compile();
 
     controller = module.get<DirectionsController>(DirectionsController);

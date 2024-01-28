@@ -14,17 +14,8 @@ export class TeachersEntity extends GenericEntity {
   @Column({ length: 10 })
   phone: string;
 
-  @Column()
+  @Column({ nullable: true })
   direccion: string;
-  /*
-
-  @ManyToOne(() => DirectionsEntity, (direccion) => direccion.id) .
-  direccion: DirectionsEntity;
-<<<<<<< HEAD
-  
-  @OneToMany(() => GroupsEntity, (grupo) => grupo.id)
-  grupos: GroupsEntity[];
-*/
 
   @ManyToOne(() => GroupsEntity, (grupo) => grupo.teacher)
   group: GroupsEntity[];

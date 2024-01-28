@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 import { StudentsEntity } from '../students/students.entity';
+import { CorteEntity } from '../corte/corte.entity';
 
 export enum ConceptoPago {
   ABONO_MENSUAL = 'Pago mensual',
@@ -28,4 +29,7 @@ export class StudentPayment extends GenericEntity {
 
   @ManyToOne(() => StudentsEntity, (student) => student.payments)
   student: StudentsEntity;
+
+  @ManyToOne(() => CorteEntity, (corte) => corte.pagos, { nullable: true })
+  corte: CorteEntity;
 }

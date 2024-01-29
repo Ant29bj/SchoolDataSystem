@@ -12,20 +12,16 @@ import { EmpleadosModule } from './app/empleados/empleados.module';
 import { PayrollMoudle } from './app/payroll/payroll.module';
 import { StudentPaymentModule } from './app/students-payment/student-payment.module';
 import { ScheduleModule } from '@nestjs/schedule';
-import { CorteController } from './app/corte/corte.controller';
 import { CorteModule } from './app/corte/corte.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { typeOrmConfigAsync } from './app/config/typeorm.config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      username: 'root',
-      password: 'root',
-      database: 'root',
-      host: 'localhost',
-      port: 5432,
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true,
+    TypeOrmModule.forRootAsync(typeOrmConfigAsync),
+    ConfigModule.forRoot({
+      envFilePath: ['.development.env', '.env'],
+      isGlobal: true,
     }),
     ScheduleModule.forRoot(),
     ParentsModule,
@@ -40,6 +36,6 @@ import { CorteModule } from './app/corte/corte.module';
     CorteModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ConfigService],
 })
 export class AppModule {}

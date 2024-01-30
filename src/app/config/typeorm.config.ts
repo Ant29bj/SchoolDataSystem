@@ -15,6 +15,8 @@ export default class TypeOrmConfig {
       port: configService.get('DB_PORT'),
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
+      autoLoadEntities: true,
+      ssl: true,
     };
   }
 }

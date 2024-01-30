@@ -17,7 +17,6 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   const configServce = app.get(ConfigService);
-  console.log(configServce.get('DB_HOST'));
 
   await app.listen(3000);
 }

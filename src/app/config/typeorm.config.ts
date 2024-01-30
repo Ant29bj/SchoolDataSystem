@@ -6,6 +6,7 @@ import {
 
 export default class TypeOrmConfig {
   static getOrmConfig(configService: ConfigService): TypeOrmModuleOptions {
+    console.log(configService.get('DB_HOST'));
     return {
       type: 'postgres',
       host: configService.get('DB_HOST'),

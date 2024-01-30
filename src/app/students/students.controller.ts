@@ -104,7 +104,6 @@ export class StudentsController extends GenericController<
       // return { message: 'Operacion exitosa' };
       return await this.studentsService.abonarMensualidad(matricula, pago);
     } catch (err) {
-      console.log('entro');
       return err;
     }
   }

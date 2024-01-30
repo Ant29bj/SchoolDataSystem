@@ -30,7 +30,6 @@ export class StudentPaymentController extends GenericController<
   override find(
     options?: FindManyOptions<StudentPayment>,
   ): Promise<StudentPayment[]> {
-    console.log('entro');
     return this.studentPaymentServie.find({ relations: ['student'] });
   }
 

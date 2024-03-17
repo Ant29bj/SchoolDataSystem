@@ -11,5 +11,6 @@ import { TeachersEntity } from '../teachers/teachers.entity';
   imports: [TypeOrmModule.forFeature([GroupsEntity]), TeachersModule],
   controllers: [GroupsController],
   providers: [GroupsService],
+  exports: [GroupsService],
 })
 export class GroupsModule {}

@@ -27,7 +27,10 @@ export class GroupsService {
   }
 
   findOne(id: number): Promise<GroupsEntity> {
-    return this.groupsRepository.findOne({ where: { id } });
+    return this.groupsRepository.findOne({
+      where: { id },
+      relations: ['teacher'],
+    });
   }
 
   async create(group: GroupsEntity): Promise<GroupsEntity> {
@@ -40,7 +43,6 @@ export class GroupsService {
     return await this.groupsRepository.findOne({ where: { id } });
   }
   async findOneWithRelations(id: string): Promise<GroupsEntity | undefined> {
-
     return this.groupsRepository
 
       .createQueryBuilder('group')

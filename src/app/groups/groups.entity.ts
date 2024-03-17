@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 import { TeachersEntity } from '../teachers/teachers.entity';
 import { StudentsEntity } from '../students/students.entity';
+import { GradeEntity } from '../grades/grades.entity';
 
 @Entity('groups')
 export class GroupsEntity extends GenericEntity {
@@ -9,6 +10,7 @@ export class GroupsEntity extends GenericEntity {
     schedule: string,
     name: string,
     teacher: TeachersEntity,
+    modulo: string,
     day: string,
   ) {
     super();
@@ -16,6 +18,7 @@ export class GroupsEntity extends GenericEntity {
     this.day = day;
     this.schedule = schedule;
     this.teacher = teacher;
+    this.modulo = modulo;
   }
 
   @Column({ type: 'time' })
@@ -27,9 +30,15 @@ export class GroupsEntity extends GenericEntity {
   @Column()
   day: string;
 
+  @Column({ nullable: true })
+  modulo: string;
+
   @ManyToOne(() => TeachersEntity, (teacher) => teacher.id)
   teacher: TeachersEntity;
 
   @OneToMany(() => StudentsEntity, (student) => student.group)
   students: StudentsEntity[];
+
+  @OneToMany(() => GradeEntity, (grade) => grade.assigment)
+  grades: GradeEntity[];
 }

@@ -41,6 +41,7 @@ export class GroupsController {
       group.schedule,
       nombreGrupo,
       teacher,
+      group.modulo,
       group.day,
     );
     const confirmGroup = await this.groupsService.findOneBy({
@@ -49,7 +50,13 @@ export class GroupsController {
     if (confirmGroup) {
       throw new ConflictException('El grupo ya existe.');
     }
-    return this.groupsService.create(newGroup);
+    const updatedGroup = await this.groupsService.create(newGroup);
+
+    const teacherConfimr = await this.teacherService.update(teacher.id, {
+      group: updatedGroup.id,
+    });
+
+    return updatedGroup;
   }
   @Put(':id')
   async update(

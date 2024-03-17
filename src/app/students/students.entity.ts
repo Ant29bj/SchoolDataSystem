@@ -12,6 +12,7 @@ import { Max, Min } from 'class-validator';
 import { ParentsEntity } from '../parents/parents.entity'; // Importa la entidad ParentsEntity
 import { GroupsEntity } from '../groups/groups.entity';
 import { StudentPayment } from '../students-payment/student-payment.entity';
+import { GradeEntity } from '../grades/grades.entity';
 
 export enum Status {
   Abono = 'Abono',
@@ -44,11 +45,6 @@ export class StudentsEntity extends GenericEntity {
   @Column({ length: 10 })
   phone: string;
 
-  // @Column({ type: 'money', default: 760 })
-  // @Min(590)
-  // @Max(990)
-  // amount: number;
-
   @Column({ default: 0 })
   multas: number;
 
@@ -61,10 +57,8 @@ export class StudentsEntity extends GenericEntity {
   @Column()
   birthDay: Date;
 
-  @Column({ type: 'float', default: 0 })
-  @Min(0)
-  @Max(10)
-  grade: number;
+  @OneToMany(() => GradeEntity, (grade) => grade.student)
+  calificaciones: GradeEntity[];
 
   @Column({ default: 0 })
   sobrePago: number;
@@ -81,10 +75,6 @@ export class StudentsEntity extends GenericEntity {
   @Column({ nullable: true, default: Status.Debe })
   status: Status;
 
-  /*@OneToOne(() => DirectionsEntity, direction => direction.student)
-  @JoinColumn()
-  direction: DirectionsEntity;
-*/
   @OneToOne(() => ParentsEntity, (parent) => parent.protegido)
   @JoinColumn()
   parents: ParentsEntity;

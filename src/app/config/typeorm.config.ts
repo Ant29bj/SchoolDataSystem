@@ -16,7 +16,10 @@ export default class TypeOrmConfig {
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
       autoLoadEntities: true,
-      ssl: true,
+      ssl:
+        configService.get('DB_SSL') === 'true'
+          ? { rejectUnauthorized: false }
+          : false,
     };
   }
 }

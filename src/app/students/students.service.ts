@@ -172,4 +172,13 @@ export class StudentsService extends GenericService<StudentsEntity> {
         .getMany()
     );
   }
+
+  async findGroup(studentId: number) {
+    return this.studentsRepository.findOne({
+      where: {
+        id: studentId,
+      },
+      relations: ['group.teacher'],
+    });
+  }
 }

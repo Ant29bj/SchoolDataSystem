@@ -29,7 +29,7 @@ export abstract class GenericService<Entity extends GenericEntity> {
   }
 
   findOneById(id): Promise<Entity> {
-    return this.repository.findOne({ where: { id } });
+    return this.repository.findOne({ where: { id }, relations: [] });
   }
 
   async update(id, entity: any) {

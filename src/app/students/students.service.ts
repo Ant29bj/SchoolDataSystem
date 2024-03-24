@@ -25,7 +25,10 @@ export class StudentsService extends GenericService<StudentsEntity> {
     this.renovarMensualidad();
     this.updateAlumnos();
   }
-
+  // async createStudent(student: StudentsEntity): Promise<StudentsEntity> {
+  //   const newStudent = this.studentsRepository.create(student);
+  //   return await this.studentsRepository.save(newStudent);
+  // }
   async renovarMensualidad() {
     const fechaActual = new Date();
     const fechaDentroUnMes = new Date(fechaActual);
@@ -149,7 +152,6 @@ export class StudentsService extends GenericService<StudentsEntity> {
 
     return this.studentsRepository.update(student.id, student);
   }
-
   generateRandomChars(length: number): string {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let result = '';

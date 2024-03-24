@@ -13,7 +13,9 @@ export class ParentsService {
   findAll(): Promise<ParentsEntity[]> {
     return this.parentsRepository.find();
   }
-
+  findParent(data:any): Promise<ParentsEntity[]> {
+    return this.parentsRepository.find({where: {email : data}} );
+  }
   findOne(id: number): Promise<ParentsEntity> {
     return this.parentsRepository.findOne({ where: { id } });
   }

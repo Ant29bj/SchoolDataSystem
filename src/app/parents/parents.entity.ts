@@ -14,9 +14,8 @@ export class ParentsEntity extends GenericEntity {
   @Column({length:10})
   phone: string
 
-  @ManyToOne(() => DirectionsEntity, { eager: true })
-  @JoinColumn()
-  direction: DirectionsEntity;
+  @Column({length:70})
+  address: string
 
   @Column()
   email: string;

@@ -75,7 +75,7 @@ export class StudentsEntity extends GenericEntity {
   @Column({ nullable: true, default: Status.Debe })
   status: Status;
 
-  @OneToOne(() => ParentsEntity, (parent) => parent.protegido)
+  @ManyToOne(() => ParentsEntity, (parent) => parent.protegido)
   @JoinColumn()
   parents: ParentsEntity;
 

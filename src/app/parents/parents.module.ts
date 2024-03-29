@@ -7,6 +7,7 @@ import { ParentsEntity } from './parents.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([ParentsEntity])],
   controllers: [ParentsController],
-  providers: [ParentsService]
+  providers: [ParentsService],
+  exports: [ParentsService],
 })
 export class ParentsModule {}

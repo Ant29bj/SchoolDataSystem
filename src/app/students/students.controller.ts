@@ -17,13 +17,14 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import { GenericController } from '../generics/generic.controller';
 import { ApiBody } from '@nestjs/swagger';
 import { FindManyOptions } from 'typeorm';
+import { ParentsService } from '../parents/parents.service';
 
 @Controller('students')
 export class StudentsController extends GenericController<
   StudentsEntity,
   StudentsService
 > {
-  constructor(private readonly studentsService: StudentsService) {
+  constructor(private readonly studentsService: StudentsService,private parentsService: ParentsService) {
     super(studentsService);
   }
 
@@ -42,7 +43,8 @@ export class StudentsController extends GenericController<
 
     newStudent.registrationDate = fecha;
     newStudent.paymentDate = paymentDate;
-
+    const updatedParent = await this.parentsService.create(newStudent.parents);
+    newStudent.parents = updatedParent;
     return this.studentsService.create(newStudent);
   }
 

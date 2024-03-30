@@ -46,6 +46,10 @@ export class StudentsController extends GenericController<
     const updatedParent = await this.parentsService.create(newStudent.parents);
     newStudent.parents = updatedParent;
     return this.studentsService.create(newStudent);
+    // updatedParent.protegido = updatedStudent
+    // const parentConfimr = await this.parentsService.update(updatedParent.id,updatedParent);
+
+    // return this.studentsService.create(newStudent);
   }
 
   @Get()

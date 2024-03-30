@@ -21,6 +21,6 @@ export class ParentsEntity extends GenericEntity {
   email: string;
 
   @OneToMany(() => StudentsEntity, student => student.parents)
-  protegido: StudentsEntity[];
+  protegido: StudentsEntity;
  
 }

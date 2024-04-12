@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   CreateDateColumn,
   DeleteDateColumn,
   PrimaryGeneratedColumn,
@@ -14,6 +15,13 @@ export abstract class GenericEntity {
 
   @UpdateDateColumn()
   updateAt: Date;
+
+  @BeforeInsert()
+  async beforeInsertActions() {
+    const now = new Date();
+    this.createAt = now;
+    this.updateAt = now;
+  }
 
   @DeleteDateColumn()
   deletedAt: number;

@@ -55,7 +55,7 @@ export class StudentsController extends GenericController<
   @Get()
   override find(@Param() options?: FindManyOptions<StudentsEntity>) {
     return this.studentsService.find({
-      relations: ['group.teacher', 'payments', 'calificaciones'],
+      relations: ['group.teacher', 'payments', 'calificaciones','parents'],
     });
   }
 

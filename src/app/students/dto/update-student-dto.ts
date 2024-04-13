@@ -12,7 +12,6 @@ export class UpdateUserDto {
     grade: number
     debt: number
     paymentDate: string
-    /*direction: DirectionsEntity
+    direction: DirectionsEntity
     parents: ParentsEntity
-*/
 }

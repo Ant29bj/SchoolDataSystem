@@ -29,25 +29,24 @@ export class CorteService extends GenericService<CorteEntity> {
   async createCorte(data: SetearHorarioCorte) {
     let nuevoCorte = new CorteEntity();
     let ingresoTotal: number = 0
-
     let horaInicio = new Date(data.fecha);
     let horaFin = new Date(data.fecha)
 
     const inicioHoraMinutos = data.horaInicio.split(':')
-    horaInicio.setUTCHours(parseInt(inicioHoraMinutos[0], 10))
-    horaInicio.setUTCMinutes(parseInt(inicioHoraMinutos[1], 10))
+    horaInicio.setHours(parseInt(inicioHoraMinutos[0], 10))
+    horaInicio.setMinutes(parseInt(inicioHoraMinutos[1], 10))
 
     const finHoraMinutos = data.horaFin.split(':')
-    horaFin.setUTCHours(parseInt(finHoraMinutos[0], 10))
-    horaFin.setUTCMinutes(parseInt(finHoraMinutos[1], 10))
-
+    horaFin.setHours(parseInt(finHoraMinutos[0], 10))
+    horaFin.setMinutes(parseInt(finHoraMinutos[1], 10))
+    horaInicio.setDate(horaInicio.getDate() + 1);
+    horaFin.setDate(horaFin.getDate() + 1);
     const transactions = await this.studentPaymentService.find({
       where: {
         createAt: Between(horaInicio, horaFin),
         corte: IsNull()
       },
     });
-
 
     if (transactions.length < 1) return new HttpException('No hay pagos para corte', HttpStatus.CONFLICT)
 

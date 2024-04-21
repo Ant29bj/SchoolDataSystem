@@ -39,8 +39,9 @@ export class CorteService extends GenericService<CorteEntity> {
     const finHoraMinutos = data.horaFin.split(':')
     horaFin.setHours(parseInt(finHoraMinutos[0], 10))
     horaFin.setMinutes(parseInt(finHoraMinutos[1], 10))
-    //horaInicio.setDate(horaInicio.getDate() + 1);
-    //horaFin.setDate(horaFin.getDate() + 1);
+    horaInicio.setDate(horaInicio.getDate() + 1);
+    horaFin.setDate(horaFin.getDate() + 1);
+    console.log("hora inicio: ",horaInicio, "hora inicio: ", horaFin);
     const transactions = await this.studentPaymentService.find({
       where: {
         createAt: Between(horaInicio, horaFin),

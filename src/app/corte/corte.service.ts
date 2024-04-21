@@ -38,30 +38,10 @@ export class CorteService extends GenericService<CorteEntity> {
 
     // Crear objetos Date para la hora de inicio y fin
     let d1 = new Date(data.fecha);
-    let horaFin = new Date(data.fecha);
-    let timeOffset = Math.floor(d1.getTime() / 1000);
-    var d2 = new Date(
-      d1.getUTCFullYear(),
-      d1.getUTCMonth(),
-      d1.getUTCDate(),
-      d1.getUTCHours(),
-      d1.getUTCMinutes(),
-      d1.getUTCSeconds(),
-    );
-    log(d2.toUTCString());
+    d1.toLocaleString('en-US', { timeZone: 'America/Mazatlan' });
+    log('HELO', d1.toISOString());
+    log('date', new Date(d1.toISOString()));
 
-    // Establecer la hora de inicio
-    const inicioHoraMinutos = data.horaInicio.split(':');
-    d1.setHours(parseInt(inicioHoraMinutos[0], 10));
-    d1.setMinutes(parseInt(inicioHoraMinutos[1], 10));
-
-    // Establecer la hora de fin
-    const finHoraMinutos = data.horaFin.split(':');
-    horaFin.setHours(parseInt(finHoraMinutos[0], 10));
-    horaFin.setMinutes(parseInt(finHoraMinutos[1], 10));
-
-    console.log('Hora inicio:', d1);
-    console.log('Hora fin:', horaFin);
     // hora inicio 18/04/2024UTC16:00 18/04/2024UTC20:00
     const transactions = await this.studentPaymentService.find({
       where: {

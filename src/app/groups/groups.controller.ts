@@ -70,7 +70,7 @@ export class GroupsController {
     }
 
     if (group.teacher) {
-      const teacher = await this.teacherService.findOneById(group.teacher);
+      const teacher = await this.teacherService.findOneById(group.teacher.id);
 
       if (!teacher) {
         throw new NotFoundException('No existe maestro');
@@ -99,14 +99,14 @@ export class GroupsController {
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<void> {
     const group = await this.groupsService.findOneWithRelations(id);
-
+ 
     if (!group) {
       throw new NotFoundException('Grupo no encontrado');
     }
 
-    if (group.students && group.students.length > 0) {
+    /* if (group.students && group.students.length > 0) {
       throw new ConflictException('No se puede eliminar un grupo con alumnos');
-    }
+    } */
 
     // Si no hay alumnos asociados, se puede eliminar el grupo
     await this.groupsService.remove(id);

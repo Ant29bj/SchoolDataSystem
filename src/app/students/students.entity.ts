@@ -6,6 +6,7 @@ import {
   OneToMany,
   BeforeInsert,
   ManyToOne,
+  ManyToMany
 } from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 import { Max, Min } from 'class-validator';
@@ -13,6 +14,7 @@ import { ParentsEntity } from '../parents/parents.entity'; // Importa la entidad
 import { GroupsEntity } from '../groups/groups.entity';
 import { StudentPayment } from '../students-payment/student-payment.entity';
 import { GradeEntity } from '../grades/grades.entity';
+import { StudentsGroupsEntity } from '../students_groups/students_groups.entity';
 
 export enum Status {
   Abono = 'Abono',
@@ -79,8 +81,8 @@ export class StudentsEntity extends GenericEntity {
   @JoinColumn()
   parents: ParentsEntity;
 
-  @ManyToOne(() => GroupsEntity, (group) => group.students)
-  group: GroupsEntity;
+  @OneToMany(() => StudentsGroupsEntity, studentGroups => studentGroups.student)
+  studentGroups: StudentsGroupsEntity[];
 
   @OneToMany(() => StudentPayment, (payment) => payment.student)
   payments: StudentPayment[];

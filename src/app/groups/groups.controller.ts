@@ -22,7 +22,7 @@ export class GroupsController {
   ) {}
   @Get()
   findAll(): Promise<GroupsEntity[]> {
-    return this.groupsService.findAll({ relations: ['teacher', 'students'] });
+    return this.groupsService.findAll({ relations: ['teacher', 'studentGroups.student'] });
   }
   @Get(':id')
   findOne(@Param('id') id: number): Promise<GroupsEntity> {

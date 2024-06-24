@@ -2,7 +2,6 @@ import { Column, Entity, ManyToOne, OneToMany, ManyToMany } from 'typeorm';
 import { GenericEntity } from '../generics/generic.entity';
 import { TeachersEntity } from '../teachers/teachers.entity';
 import { StudentsEntity } from '../students/students.entity';
-import { GradeEntity } from '../grades/grades.entity';
 import { StudentsGroupsEntity } from '../students_groups/students_groups.entity';
 
 @Entity('groups')
@@ -38,8 +37,6 @@ export class GroupsEntity extends GenericEntity {
   teacher: TeachersEntity;
 
   @OneToMany(() => StudentsGroupsEntity, studentGroups => studentGroups.group)
-  studentGroups: StudentsGroupsEntity[];
+  studentGroups: StudentsGroupsEntity;
 
-  @OneToMany(() => GradeEntity, (grade) => grade.assigment)
-  grades: GradeEntity[];
 }

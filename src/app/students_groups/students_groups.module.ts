@@ -1,12 +1,16 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { StudentsGroupsController } from './students_groups.controller';
 import { StudentsGroupsService } from './students_groups.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { StudentsEntity } from '../students/students.entity';
+import { StudentsGroupsEntity } from './students_groups.entity';
+import { StudentsModule } from '../students/students.module';
+import { GroupsModule } from '../groups/groups.module';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([StudentsEntity])],
+  imports:[TypeOrmModule.forFeature([StudentsGroupsEntity]), forwardRef(() => StudentsModule), // Usamos forwardRef para resolver dependencia circular
+  forwardRef(() => GroupsModule)],
   controllers: [StudentsGroupsController],
-  providers: [StudentsGroupsService]
+  providers: [StudentsGroupsService],
+  exports: [StudentsGroupsService],
 })
 export class StudentsGroupsModule {}

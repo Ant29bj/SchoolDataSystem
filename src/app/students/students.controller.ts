@@ -18,13 +18,14 @@ import { GenericController } from '../generics/generic.controller';
 import { ApiBody } from '@nestjs/swagger';
 import { FindManyOptions } from 'typeorm';
 import { ParentsService } from '../parents/parents.service';
+import { StudentsGroupsService } from '../students_groups/students_groups.service';
 
 @Controller('students')
 export class StudentsController extends GenericController<
   StudentsEntity,
   StudentsService
 > {
-  constructor(private readonly studentsService: StudentsService,private parentsService: ParentsService) {
+  constructor(private readonly studentsService: StudentsService,private parentsService: ParentsService, private studentsGroupsService: StudentsGroupsService) {
     super(studentsService);
   }
 
@@ -55,7 +56,7 @@ export class StudentsController extends GenericController<
   @Get()
   override find(@Param() options?: FindManyOptions<StudentsEntity>) {
     return this.studentsService.find({
-      relations: ['group.teacher', 'payments', 'calificaciones','parents'],
+      relations: ['studentGroups.group.teacher', 'payments', 'studentGroups','parents'],
     });
   }
 
@@ -89,7 +90,11 @@ export class StudentsController extends GenericController<
 
   @Put()
   @Patch()
-  override update(@Query('id') id: number, @Body() entity: StudentsEntity) {
+  async update(@Param('id') id: number, @Body() entity: StudentsEntity) {
+    console.log(id, entity);
+    let studentGroups = await this.studentsGroupsService.setStudentGrade(entity.id, entity.studentGroups[0].group, null);   
+    entity.studentGroups[0] = studentGroups; // Asignamos directamente el resultado a entity.studentGroups
+    console.log(entity);
     return this.studentsService.update(id, entity);
   }
 

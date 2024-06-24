@@ -15,8 +15,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { CorteModule } from './app/corte/corte.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { typeOrmConfigAsync } from './app/config/typeorm.config';
-import { GradesModule } from './app/grades/grades.module';
-import { StudentsGroupsModule } from './students_groups/students_groups.module';
+import { StudentsGroupsModule } from './app/students_groups/students_groups.module';
 
 @Module({
   imports: [
@@ -36,8 +35,7 @@ import { StudentsGroupsModule } from './students_groups/students_groups.module';
     PayrollMoudle,
     StudentPaymentModule,
     CorteModule,
-    GradesModule,
-    StudentsGroupsModule,
+    StudentsGroupsModule
   ],
   controllers: [AppController],
   providers: [AppService, ConfigService],

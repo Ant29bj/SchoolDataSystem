@@ -13,7 +13,6 @@ import { Max, Min } from 'class-validator';
 import { ParentsEntity } from '../parents/parents.entity'; // Importa la entidad ParentsEntity
 import { GroupsEntity } from '../groups/groups.entity';
 import { StudentPayment } from '../students-payment/student-payment.entity';
-import { GradeEntity } from '../grades/grades.entity';
 import { StudentsGroupsEntity } from '../students_groups/students_groups.entity';
 
 export enum Status {
@@ -59,9 +58,6 @@ export class StudentsEntity extends GenericEntity {
   @Column()
   birthDay: Date;
 
-  @OneToMany(() => GradeEntity, (grade) => grade.student)
-  calificaciones: GradeEntity[];
-
   @Column({ default: 0 })
   sobrePago: number;
 
@@ -82,8 +78,8 @@ export class StudentsEntity extends GenericEntity {
   parents: ParentsEntity;
 
   @OneToMany(() => StudentsGroupsEntity, studentGroups => studentGroups.student)
-  studentGroups: StudentsGroupsEntity[];
+  studentGroups: StudentsGroupsEntity;
 
   @OneToMany(() => StudentPayment, (payment) => payment.student)
-  payments: StudentPayment[];
+  payments: StudentPayment;
 }

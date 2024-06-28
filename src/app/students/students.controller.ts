@@ -92,9 +92,9 @@ export class StudentsController extends GenericController<
   @Patch()
   async update(@Param('id') id: number, @Body() entity: StudentsEntity) {
     console.log(id, entity);
+    console.log(entity.studentGroups);
     let studentGroups = await this.studentsGroupsService.setStudentGrade(entity.id, entity.studentGroups[0].group, null);   
     entity.studentGroups[0] = studentGroups; // Asignamos directamente el resultado a entity.studentGroups
-    console.log(entity);
     return this.studentsService.update(id, entity);
   }
 

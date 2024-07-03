@@ -7,8 +7,7 @@ import { StudentsModule } from '../students/students.module';
 import { GroupsModule } from '../groups/groups.module';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([StudentsGroupsEntity]), forwardRef(() => StudentsModule), // Usamos forwardRef para resolver dependencia circular
-  forwardRef(() => GroupsModule)],
+  imports:[TypeOrmModule.forFeature([StudentsGroupsEntity]), forwardRef(() => StudentsModule), forwardRef(() => GroupsModule)],
   controllers: [StudentsGroupsController],
   providers: [StudentsGroupsService],
   exports: [StudentsGroupsService],

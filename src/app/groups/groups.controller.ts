@@ -13,12 +13,15 @@ import { GroupsService } from './groups.service';
 import { GroupsEntity } from './groups.entity';
 import { TeachersService } from '../teachers/teachers.service';
 import { CreateGroupDto } from './dto/create-group.dto';
+import { StudentsGroupsService } from '../students_groups/students_groups.service';
+import { GenericController } from '../generics/generic.controller';
 
 @Controller('groups')
 export class GroupsController {
   constructor(
     private readonly groupsService: GroupsService,
     private readonly teacherService: TeachersService,
+    private readonly studentsGroupsService: StudentsGroupsService
   ) {}
   @Get()
   findAll(): Promise<GroupsEntity[]> {
@@ -87,7 +90,15 @@ export class GroupsController {
           existingGroup.teacher?.firstName || ''
         }`;
     }
-
+    console.log(group)
+    let studentgroups;
+    studentgroups = group.studentGroups;
+    await Promise.all(studentgroups.map(async (studentGroup, index) => {
+      if (studentGroup.student != null){
+        let updatedStudentGroup = await this.studentsGroupsService.setStudentGrade(studentGroup.student.id, id, studentGroup.grade);
+      }   
+    }));
+    delete group.studentGroups;
     const updatedGroup = await this.groupsService.update(id, group);
 
     // Actualizar el nombre del grupo en el objeto de respuesta

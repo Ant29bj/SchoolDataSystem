@@ -6,9 +6,10 @@ import { GroupsEntity } from './groups.entity';
 import { TeachersModule } from '../teachers/teachers.module';
 import { TeachersService } from '../teachers/teachers.service';
 import { TeachersEntity } from '../teachers/teachers.entity';
+import { StudentsGroupsModule } from '../students_groups/students_groups.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([GroupsEntity]), TeachersModule],
+  imports: [TypeOrmModule.forFeature([GroupsEntity]), TeachersModule, StudentsGroupsModule],
   controllers: [GroupsController],
   providers: [GroupsService],
   exports: [GroupsService, TypeOrmModule],

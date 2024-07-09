@@ -18,7 +18,7 @@ export class StudentsGroupsService{
         @InjectRepository(GroupsEntity)
         private readonly groupRepository: Repository<GroupsEntity>,
       ) {}
-    async setStudentGrade(student_id: number, group_id: number, grade: number | null): Promise<StudentsGroupsEntity> {
+    async setStudentGrade(student_id: number, group_id: number, basic_grade: number | null, inter_grade: number | null, inter_advanced_grade: number | null, advanced_grade: number | null): Promise<StudentsGroupsEntity> {
         const student = await this.studentRepository.findOne({ where: { id: student_id } });
         const group = await this.groupRepository.findOne({ where: { id: group_id } });
     
@@ -39,8 +39,17 @@ export class StudentsGroupsService{
             studentGroup.group = group;
         }
     
-        if (grade !== null && grade !== undefined) {
-            studentGroup.grade = grade;
+        if (basic_grade !== null && basic_grade !== undefined) {
+            studentGroup.basic_grade = basic_grade;
+        }
+        if (inter_grade !== null && inter_grade !== undefined) {
+            studentGroup.inter_grade = inter_grade;
+        }
+        if (inter_advanced_grade !== null && inter_advanced_grade !== undefined) {
+            studentGroup.inter_advanced_grade = inter_advanced_grade;
+        }
+        if (advanced_grade !== null && advanced_grade !== undefined) {
+            studentGroup.advanced_grade = advanced_grade;
         }
     
         console.log(studentGroup);

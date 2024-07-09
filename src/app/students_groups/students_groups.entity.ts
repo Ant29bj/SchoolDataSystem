@@ -4,7 +4,7 @@ import { Max, Min } from 'class-validator';
 import { StudentsEntity } from '../students/students.entity';
 import { GenericEntity } from '../generics/generic.entity';
 
-@Entity()
+@Entity('students-groups')
 export class StudentsGroupsEntity extends GenericEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -12,7 +12,22 @@ export class StudentsGroupsEntity extends GenericEntity {
   @Min(0)
   @Max(10)
   @Column({ nullable: true })
-  grade: number;
+  basic_grade: number;
+
+  @Min(0)
+  @Max(10)
+  @Column({ nullable: true })
+  inter_grade: number;
+
+  @Min(0)
+  @Max(10)
+  @Column({ nullable: true })
+  inter_advanced_grade: number;
+
+  @Min(0)
+  @Max(10)
+  @Column({ nullable: true })
+  advanced_grade: number;
 
   @ManyToOne(() => StudentsEntity, student => student.studentGroups)
   student: StudentsEntity;

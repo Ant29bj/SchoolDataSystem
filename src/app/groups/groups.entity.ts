@@ -10,7 +10,7 @@ export class GroupsEntity extends GenericEntity {
     schedule: string,
     name: string,
     teacher: TeachersEntity,
-    modulo: string,
+    carrera: string,
     day: string,
   ) {
     super();
@@ -18,7 +18,7 @@ export class GroupsEntity extends GenericEntity {
     this.day = day;
     this.schedule = schedule;
     this.teacher = teacher;
-    this.modulo = modulo;
+    this.carrera = carrera;
   }
 
   @Column({ type: 'time' })
@@ -31,7 +31,7 @@ export class GroupsEntity extends GenericEntity {
   day: string;
 
   @Column({ nullable: true })
-  modulo: string;
+  carrera: string;
 
   @ManyToOne(() => TeachersEntity, (teacher) => teacher.id)
   teacher: TeachersEntity;

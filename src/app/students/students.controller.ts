@@ -97,7 +97,7 @@ export class StudentsController extends GenericController<
     //console.log('cambio: ',studentgroups)
     await Promise.all(studentgroups.map(async (studentGroup, index) => {
       //console.log('for: ',studentGroup)
-        let updatedStudentGroup = await this.studentsGroupsService.setStudentGrade(entity.id, studentGroup.group.id, null, null,null,null);
+        let updatedStudentGroup = await this.studentsGroupsService.setStudentGrade(entity.id, studentGroup.group.id, studentGroup.basic_grade, studentGroup.inter_grade,studentGroup.inter_advanced_grade,studentGroup.advanced_grade);
         entity.studentGroups[index] = updatedStudentGroup;
     }));
 

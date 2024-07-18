@@ -44,7 +44,7 @@ export class GroupsController {
       group.schedule,
       nombreGrupo,
       teacher,
-      group.modulo,
+      group.carrera,
       group.day,
     );
     const confirmGroup = await this.groupsService.findOneBy({

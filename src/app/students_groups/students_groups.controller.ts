@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Put } from '@nestjs/common';
 import { StudentsGroupsService } from './students_groups.service';
 import { StudentsGroupsEntity } from './students_groups.entity';
 
@@ -25,5 +25,10 @@ export class StudentsGroupsController {
     @Get('student/:student_id')
     async getStudentsGroupsByStudent(@Param('student_id') student_id: number) {
         return await this.studentsGroupsService.getStudentsGroupsByStudent(student_id);
+    }
+    @Put('mergeGroups')
+    async mergeGroups(@Body('group_stay') group_stay: number,@Body('group_delete') group_delete: number,){
+        
+        return await this.studentsGroupsService.mergeGroup(group_stay, group_delete);
     }
 }

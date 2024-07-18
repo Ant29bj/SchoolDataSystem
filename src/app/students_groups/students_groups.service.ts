@@ -18,6 +18,16 @@ export class StudentsGroupsService{
         @InjectRepository(GroupsEntity)
         private readonly groupRepository: Repository<GroupsEntity>,
       ) {}
+    async mergeGroup(group_stay: number, group_delete: number): Promise<StudentsGroupsEntity> {
+        const group_1 = await this.getGroupByid(group_stay);
+        const studentsToMove = await this.getStudentsGroupsByGroup(group_delete);
+        for (const studentGroup of studentsToMove) {
+            studentGroup.group = group_1;
+            await this.studentGroupsRepository.save(studentGroup);
+        }
+        const group = await this.groupRepository.delete(group_delete);
+        return
+    }
     async setStudentGrade(student_id: number, group_id: number, basic_grade: number | null, inter_grade: number | null, inter_advanced_grade: number | null, advanced_grade: number | null): Promise<StudentsGroupsEntity> {
         const student = await this.studentRepository.findOne({ where: { id: student_id } });
         const group = await this.groupRepository.findOne({ where: { id: group_id } });
@@ -68,6 +78,9 @@ export class StudentsGroupsService{
             where: { student: { id: student_id } },
             relations: ['student', 'group'],
         });
+    }
+    async getGroupByid(group_id: number) {
+        return await this.groupRepository.findOne({ where: { id: group_id } });
     }
 
 }

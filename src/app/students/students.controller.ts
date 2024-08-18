@@ -32,6 +32,7 @@ export class StudentsController extends GenericController<
   @ApiBody({ type: CreateStudentDto, required: true })
   @Post()
   override async create(@Body() newStudent: StudentsEntity) {
+
     const year = new Date(newStudent.birthDay).getUTCFullYear().toString();
     const mes = new Date(newStudent.birthDay).getUTCMonth() + 1;
     newStudent.matricula = `${year}${mes}${newStudent.curp.substring(
@@ -46,7 +47,19 @@ export class StudentsController extends GenericController<
     newStudent.paymentDate = paymentDate;
     const updatedParent = await this.parentsService.create(newStudent.parents);
     newStudent.parents = updatedParent;
-    return this.studentsService.create(newStudent);
+    const student =await this.studentsService.create(newStudent);
+    console.log('Entro: ',newStudent.studentGroups)
+    let studentgroups;
+    studentgroups = newStudent.studentGroups;
+    //console.log('cambio: ',studentgroups)
+    await Promise.all(studentgroups.map(async (studentGroup, index) => {
+      //console.log('for: ',studentGroup)
+        let updatedStudentGroup = await this.studentsGroupsService.setStudentGrade(newStudent.id, studentGroup.group.id, null, null,null,null);
+        newStudent.studentGroups[index] = updatedStudentGroup;
+    }));
+
+    return student;
+
     // updatedParent.protegido = updatedStudent
     // const parentConfimr = await this.parentsService.update(updatedParent.id,updatedParent);
 

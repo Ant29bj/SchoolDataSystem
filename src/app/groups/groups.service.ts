@@ -10,12 +10,15 @@ import {
 import { GroupsEntity } from './groups.entity';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { GenericService } from '../generics/generic.service';
+import { CareersEntity } from '../careers/careers.entity';
 
 @Injectable()
 export class GroupsService {
   constructor(
     @InjectRepository(GroupsEntity)
     private readonly groupsRepository: Repository<GroupsEntity>,
+    @InjectRepository(CareersEntity)
+    private careersRepository: Repository<CareersEntity>,
   ) {}
 
   findAll(options?: FindManyOptions<GroupsEntity>): Promise<GroupsEntity[]> {

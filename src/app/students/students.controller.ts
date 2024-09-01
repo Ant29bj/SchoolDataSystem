@@ -51,19 +51,13 @@ export class StudentsController extends GenericController<
     console.log('Entro: ',newStudent.studentGroups)
     let studentgroups;
     studentgroups = newStudent.studentGroups;
-    //console.log('cambio: ',studentgroups)
+
     await Promise.all(studentgroups.map(async (studentGroup, index) => {
-      //console.log('for: ',studentGroup)
         let updatedStudentGroup = await this.studentsGroupsService.setStudentGrade(newStudent.id, studentGroup.group.id, null, null,null,null);
         newStudent.studentGroups[index] = updatedStudentGroup;
     }));
 
     return student;
-
-    // updatedParent.protegido = updatedStudent
-    // const parentConfimr = await this.parentsService.update(updatedParent.id,updatedParent);
-
-    // return this.studentsService.create(newStudent);
   }
 
   @Get()

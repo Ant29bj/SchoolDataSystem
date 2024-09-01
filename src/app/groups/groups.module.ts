@@ -7,9 +7,10 @@ import { TeachersModule } from '../teachers/teachers.module';
 import { TeachersService } from '../teachers/teachers.service';
 import { TeachersEntity } from '../teachers/teachers.entity';
 import { StudentsGroupsModule } from '../students_groups/students_groups.module';
+import { CareersEntity } from '../careers/careers.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([GroupsEntity]), TeachersModule, StudentsGroupsModule],
+  imports: [TypeOrmModule.forFeature([GroupsEntity, CareersEntity]), TeachersModule, StudentsGroupsModule],
   controllers: [GroupsController],
   providers: [GroupsService],
   exports: [GroupsService, TypeOrmModule],

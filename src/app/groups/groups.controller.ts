@@ -15,17 +15,22 @@ import { TeachersService } from '../teachers/teachers.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { StudentsGroupsService } from '../students_groups/students_groups.service';
 import { GenericController } from '../generics/generic.controller';
+import { CareersEntity } from '../careers/careers.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Controller('groups')
 export class GroupsController {
   constructor(
     private readonly groupsService: GroupsService,
     private readonly teacherService: TeachersService,
-    private readonly studentsGroupsService: StudentsGroupsService
+    private readonly studentsGroupsService: StudentsGroupsService,
+    @InjectRepository(CareersEntity)
+    private careersRepository: Repository<CareersEntity>, 
   ) {}
   @Get()
   findAll(): Promise<GroupsEntity[]> {
-    return this.groupsService.findAll({ relations: ['teacher', 'studentGroups.student'] });
+    return this.groupsService.findAll({ relations: ['teacher', 'studentGroups.student', 'carrera'] });
   }
   @Get(':id')
   findOne(@Param('id') id: number): Promise<GroupsEntity> {
@@ -39,12 +44,17 @@ export class GroupsController {
     if (!teacher) {
       throw new NotFoundException('No existe maestro');
     }
+    const careerEntity = await this.careersRepository.findOne({ where: { carrera: group.carrera } });
+
+    if (!careerEntity) {
+      throw new NotFoundException('No existe carrera');
+    }
     const nombreGrupo = `${group.day} ${group.schedule} ${teacher.firstName}`;
     const newGroup = new GroupsEntity(
       group.schedule,
       nombreGrupo,
       teacher,
-      group.carrera,
+      careerEntity,
       group.day,
     );
     const confirmGroup = await this.groupsService.findOneBy({
@@ -78,7 +88,7 @@ export class GroupsController {
       if (!teacher) {
         throw new NotFoundException('No existe maestro');
       }
-
+    
       // Construir el nuevo nombre del grupo con el nuevo profesor
       const nombreGrupo = `${group.day} ${group.schedule} ${teacher.firstName}`;
       group.name = nombreGrupo;
@@ -90,6 +100,7 @@ export class GroupsController {
           existingGroup.teacher?.firstName || ''
         }`;
     }
+    
     console.log(group)
     let studentgroups;
     studentgroups = group.studentGroups;

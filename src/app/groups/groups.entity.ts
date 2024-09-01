@@ -3,6 +3,7 @@ import { GenericEntity } from '../generics/generic.entity';
 import { TeachersEntity } from '../teachers/teachers.entity';
 import { StudentsEntity } from '../students/students.entity';
 import { StudentsGroupsEntity } from '../students_groups/students_groups.entity';
+import { CareersEntity } from '../careers/careers.entity';
 
 @Entity('groups')
 export class GroupsEntity extends GenericEntity {
@@ -10,7 +11,7 @@ export class GroupsEntity extends GenericEntity {
     schedule: string,
     name: string,
     teacher: TeachersEntity,
-    carrera: string,
+    carrera: CareersEntity,
     day: string,
   ) {
     super();
@@ -30,8 +31,8 @@ export class GroupsEntity extends GenericEntity {
   @Column()
   day: string;
 
-  @Column({ nullable: true })
-  carrera: string;
+  @ManyToOne(() => CareersEntity)
+  carrera: CareersEntity;
 
   @ManyToOne(() => TeachersEntity, (teacher) => teacher.id)
   teacher: TeachersEntity;

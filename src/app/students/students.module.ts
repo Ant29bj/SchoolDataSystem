@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StudentsEntity } from './students.entity';
 import { ParentsModule } from '../parents/parents.module';
 import { StudentsGroupsModule } from '../students_groups/students_groups.module';
+import { GroupsModule } from '../groups/groups.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([StudentsEntity]), forwardRef(() => ParentsModule), forwardRef(() => StudentsGroupsModule)],
+  imports: [TypeOrmModule.forFeature([StudentsEntity]), forwardRef(() => ParentsModule), forwardRef(() => StudentsGroupsModule), forwardRef(() => GroupsModule),],
   controllers: [StudentsController],
   providers: [StudentsService],
   exports: [StudentsService, TypeOrmModule],

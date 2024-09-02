@@ -23,8 +23,6 @@ export enum Status {
   Proximo = 'Proximo a pagar',
 }
 
-const MENSUALIDAD_IMPORTE = 760;
-const INSCRIPCION_IMPORT = 1700;
 
 @Entity('students')
 export class StudentsEntity extends GenericEntity {
@@ -61,10 +59,10 @@ export class StudentsEntity extends GenericEntity {
   @Column({ default: 0 })
   sobrePago: number;
 
-  @Column({ default: INSCRIPCION_IMPORT })
+  @Column({type: 'money', default: 0 })
   inscripcion: number;
 
-  @Column({ type: 'money', default: MENSUALIDAD_IMPORTE })
+  @Column({ type: 'money', default: 0 })
   debt: number;
 
   @Column()

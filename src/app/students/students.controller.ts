@@ -19,13 +19,15 @@ import { ApiBody } from '@nestjs/swagger';
 import { FindManyOptions } from 'typeorm';
 import { ParentsService } from '../parents/parents.service';
 import { StudentsGroupsService } from '../students_groups/students_groups.service';
+import { GroupsService } from '../groups/groups.service';
+import { TransformarDeuda } from './utlis/transform-type-money';
 
 @Controller('students')
 export class StudentsController extends GenericController<
   StudentsEntity,
   StudentsService
 > {
-  constructor(private readonly studentsService: StudentsService,private parentsService: ParentsService, private studentsGroupsService: StudentsGroupsService) {
+  constructor(private readonly studentsService: StudentsService,private parentsService: ParentsService, private studentsGroupsService: StudentsGroupsService, private readonly groupsService: GroupsService) {
     super(studentsService);
   }
 
@@ -45,25 +47,34 @@ export class StudentsController extends GenericController<
 
     newStudent.registrationDate = fecha;
     newStudent.paymentDate = paymentDate;
+    
     const updatedParent = await this.parentsService.create(newStudent.parents);
     newStudent.parents = updatedParent;
-    const student =await this.studentsService.create(newStudent);
-    console.log('Entro: ',newStudent.studentGroups)
+    
     let studentgroups;
     studentgroups = newStudent.studentGroups;
+    let grupo = await this.groupsService.findOne(studentgroups[0].group.id);
+    console.log('grupo:', grupo)
+    newStudent.inscripcion = TransformarDeuda( grupo.carrera.inscripcion);
+    newStudent.debt =  TransformarDeuda( grupo.carrera.mensualidad);
+
+
+    const student =await this.studentsService.create(newStudent);
+    console.log('Entro: ',newStudent.studentGroups)
+    
 
     await Promise.all(studentgroups.map(async (studentGroup, index) => {
         let updatedStudentGroup = await this.studentsGroupsService.setStudentGrade(newStudent.id, studentGroup.group.id, null, null,null,null);
         newStudent.studentGroups[index] = updatedStudentGroup;
     }));
-
+    
     return student;
   }
 
   @Get()
   override find(@Param() options?: FindManyOptions<StudentsEntity>) {
     return this.studentsService.find({
-      relations: ['studentGroups.group.teacher', 'payments', 'studentGroups','parents'],
+      relations: ['studentGroups.group.teacher', 'payments', 'studentGroups','parents', 'studentGroups.group.carrera'],
     });
   }
 

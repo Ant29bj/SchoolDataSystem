@@ -7,7 +7,6 @@ import { Cron } from '@nestjs/schedule';
 import { TransformarDeuda } from './utlis/transform-type-money';
 
 // Agregar historial de pago del alumno
-const IMPORTE_MENSUALIDAD: number = 760;
 const IMPORTE_MULTA: number = 80;
 const DIA_MES: number = 28;
 
@@ -31,16 +30,32 @@ export class StudentsService extends GenericService<StudentsEntity> {
   // }
   async renovarMensualidad() {
     const fechaActual = new Date();
+    fechaActual.setHours(0, 0, 0, 0);
+
+    const fechaFinalDelDia = new Date(fechaActual);
+    fechaFinalDelDia.setHours(23, 59, 59, 999);
     const fechaDentroUnMes = new Date(fechaActual);
+    //console.log(fechaActual)
     const students = await this.studentsRepository.find({
       where: {
-        paymentDate: fechaActual,
+        paymentDate: Between(fechaActual, fechaFinalDelDia),
       },
+      relations: ['studentGroups', 'studentGroups.group','studentGroups.group.carrera'],
     });
+
     if (students.length === 0) return;
 
     fechaDentroUnMes.setDate(fechaDentroUnMes.getDate() + 28);
+    //console.log('fechaDentroUnMes: ', fechaDentroUnMes)
     for (const student of students) {
+      //console.log(student)
+      let IMPORTE_MENSUALIDAD = 0;
+      let studentGroups = Array.isArray(student.studentGroups) 
+      ? student.studentGroups 
+      : [student.studentGroups];
+      for (const studentGroup of studentGroups) {
+        IMPORTE_MENSUALIDAD += TransformarDeuda(studentGroup.group.carrera.mensualidad);
+      }
       let deudaTransformada = TransformarDeuda(student.debt);
       deudaTransformada += IMPORTE_MENSUALIDAD;
       if (deudaTransformada <= student.sobrePago) {
@@ -60,7 +75,7 @@ export class StudentsService extends GenericService<StudentsEntity> {
         student.paymentDate = fechaDentroUnMes;
         student.status = Status.NoDebe;
       }
-
+      //console.log('student:    ',student)
       await this.update(student.id, student);
     }
   }
@@ -93,10 +108,19 @@ export class StudentsService extends GenericService<StudentsEntity> {
       where: {
         matricula: matricula,
       },
+      relations: ['studentGroups', 'studentGroups.group','studentGroups.group.carrera'],
     });
-
     student.sobrePago += pago;
     let deuda = TransformarDeuda(student.debt);
+    
+    let IMPORTE_MENSUALIDAD = 0;
+    let studentGroups = Array.isArray(student.studentGroups) 
+    ? student.studentGroups 
+    : [student.studentGroups];
+    for (const studentGroup of studentGroups) {
+      console.log(studentGroup)
+      IMPORTE_MENSUALIDAD += TransformarDeuda(studentGroup.group.carrera.mensualidad);
+    }
 
     if (student.sobrePago > deuda) {
       student.sobrePago -= deuda;
@@ -137,18 +161,19 @@ export class StudentsService extends GenericService<StudentsEntity> {
         matricula: matricula,
       },
     });
-
-    if (student.inscripcion == 0) {
+    let inscripcion = TransformarDeuda(student.inscripcion)
+    if (inscripcion == 0) {
       return '';
     }
 
-    if (student.inscripcion <= 0)
+    if (inscripcion <= 0)
       return new HttpException('Inscripcion pagada', HttpStatus.BAD_GATEWAY);
 
     if (!student)
       return new HttpException('Alumno not Found', HttpStatus.NOT_FOUND);
 
-    student.inscripcion -= pago;
+    inscripcion -= pago;
+    student.inscripcion = inscripcion;
 
     return this.studentsRepository.update(student.id, student);
   }
@@ -180,7 +205,7 @@ export class StudentsService extends GenericService<StudentsEntity> {
       where: {
         id: studentId,
       },
-      relations: ['group.teacher'],
+      relations: ['group.teacher', 'group.carrera'],
     });
   }
 }

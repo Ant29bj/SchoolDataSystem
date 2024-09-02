@@ -32,7 +32,7 @@ export class GroupsService {
   findOne(id: number): Promise<GroupsEntity> {
     return this.groupsRepository.findOne({
       where: { id },
-      relations: ['teacher'],
+      relations: ['teacher', 'studentGroups.student', 'carrera'],
     });
   }
 

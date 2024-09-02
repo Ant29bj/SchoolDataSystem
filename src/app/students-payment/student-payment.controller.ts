@@ -8,7 +8,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { GenericController } from '../generics/generic.controller';
-import { StudentPayment } from './student-payment.entity';
+import { ConceptoPago, StudentPayment } from './student-payment.entity';
 import { StudentPaymentService } from './student-payment.service';
 import { FindManyOptions, InsertResult } from 'typeorm';
 import { StudentsService } from '../students/students.service';
@@ -92,7 +92,7 @@ export class StudentPaymentController extends GenericController<
     studentPayment.importe = requestBody.importe;
     studentPayment.nombreCliente = requestBody.nombreCliente;
     studentPayment.carrera = requestBody.carrera;
-    studentPayment.concepto = requestBody.concepto;
+    studentPayment.concepto = ConceptoPago.INSCRIPCION;
     studentPayment.student = estudianteAsignar;
 
     return this.studentPaymentServie.create(studentPayment);

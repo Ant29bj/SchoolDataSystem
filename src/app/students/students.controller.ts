@@ -54,13 +54,11 @@ export class StudentsController extends GenericController<
     let studentgroups;
     studentgroups = newStudent.studentGroups;
     let grupo = await this.groupsService.findOne(studentgroups[0].group.id);
-    console.log('grupo:', grupo)
-    newStudent.inscripcion = TransformarDeuda( grupo.carrera.inscripcion);
-    newStudent.debt =  TransformarDeuda( grupo.carrera.mensualidad);
+    //newStudent.inscripcion = TransformarDeuda( grupo.carrera.inscripcion);
+    //newStudent.debt =  TransformarDeuda( grupo.carrera.mensualidad);
 
 
     const student =await this.studentsService.create(newStudent);
-    console.log('Entro: ',newStudent.studentGroups)
     
 
     await Promise.all(studentgroups.map(async (studentGroup, index) => {
@@ -112,14 +110,18 @@ export class StudentsController extends GenericController<
     console.log('Entro: ',entity.studentGroups)
     let studentgroups;
     studentgroups = entity.studentGroups;
-    //console.log('cambio: ',studentgroups)
+    console.log('cambio: ',entity)
+    
+    const student_updated = await this.studentsService.update(id, entity);
+
     await Promise.all(studentgroups.map(async (studentGroup, index) => {
       //console.log('for: ',studentGroup)
         let updatedStudentGroup = await this.studentsGroupsService.setStudentGrade(entity.id, studentGroup.group.id, studentGroup.basic_grade, studentGroup.inter_grade,studentGroup.inter_advanced_grade,studentGroup.advanced_grade);
-        entity.studentGroups[index] = updatedStudentGroup;
+        student_updated.studentGroups[index] = updatedStudentGroup;
     }));
 
-    return this.studentsService.update(id, entity);
+    return student_updated
+    
 }
 
   @Delete()

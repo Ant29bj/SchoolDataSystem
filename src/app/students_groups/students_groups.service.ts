@@ -6,6 +6,8 @@ import { StudentsService } from '../students/students.service';
 import { StudentsGroupsEntity } from './students_groups.entity';
 import { StudentsEntity } from '../students/students.entity';
 import { GroupsEntity } from '../groups/groups.entity';
+import { TransformarDeuda } from '../students/utlis/transform-type-money';
+
 @Injectable()
 export class StudentsGroupsService{
     constructor(
@@ -17,6 +19,8 @@ export class StudentsGroupsService{
     
         @InjectRepository(GroupsEntity)
         private readonly groupRepository: Repository<GroupsEntity>,
+
+        private studentsService: StudentsService
       ) {}
     async mergeGroup(group_stay: number, group_delete: number): Promise<StudentsGroupsEntity> {
         const group_1 = await this.getGroupByid(group_stay);
@@ -30,7 +34,7 @@ export class StudentsGroupsService{
     }
     async setStudentGrade(student_id: number, group_id: number, basic_grade: number | null, inter_grade: number | null, inter_advanced_grade: number | null, advanced_grade: number | null): Promise<StudentsGroupsEntity> {
         const student = await this.studentRepository.findOne({ where: { id: student_id } });
-        const group = await this.groupRepository.findOne({ where: { id: group_id } });
+        const group = await this.groupRepository.findOne({ where: { id: group_id }, relations: ['carrera'] });
     
         if (!student || !group) {
             throw new Error('Student or group not found');
@@ -44,9 +48,15 @@ export class StudentsGroupsService{
         });
     
         if (!studentGroup) {
+            let inscripcion = TransformarDeuda(student.inscripcion) + TransformarDeuda(group.carrera.inscripcion);
+            let deuda = TransformarDeuda(student.debt) + TransformarDeuda(group.carrera.mensualidad);
+            student.inscripcion = inscripcion;
+            student.debt = deuda;
+            const student_updated = await this.studentsService.update(student_id, student);
             studentGroup = new StudentsGroupsEntity();
-            studentGroup.student = student;
+            studentGroup.student = student_updated;
             studentGroup.group = group;
+            console.log('updated student', student_updated)
         }
     
         if (basic_grade !== null && basic_grade !== undefined) {

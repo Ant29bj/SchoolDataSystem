@@ -55,6 +55,7 @@ export class StudentsGroupsService{
             student.debt = deuda;
             const student_updated = await this.studentsService.update(student_id, student);
             studentGroup = new StudentsGroupsEntity();
+            studentGroup.student = student_updated;
             studentGroup.group = group;
         }
         if (inscripcion !== null && inscripcion !== undefined) {

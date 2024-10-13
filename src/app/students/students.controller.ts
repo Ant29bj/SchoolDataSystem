@@ -60,12 +60,15 @@ export class StudentsController extends GenericController<
 
     const student =await this.studentsService.create(newStudent);
     
-
+    //let inscripcion = 0, mensualidad = 0;
     await Promise.all(studentgroups.map(async (studentGroup, index) => {
-        let updatedStudentGroup = await this.studentsGroupsService.setStudentGrade(newStudent.id, studentGroup.group.id, null, null,null,null);
+        let updatedStudentGroup = await this.studentsGroupsService.setStudentGrade(newStudent.id, studentGroup.group.id, null, null,null,null, studentGroup.inscripcion, studentGroup.mensualidad);
         newStudent.studentGroups[index] = updatedStudentGroup;
+        //inscripcion += studentGroup.inscripcion;
+        //mensualidad += studentGroup.mensualidad;
     }));
-    
+    //newStudent.inscripcion = inscripcion;
+    //newStudent.debt = mensualidad;
     return student;
   }
 
@@ -116,12 +119,13 @@ export class StudentsController extends GenericController<
 
     await Promise.all(studentgroups.map(async (studentGroup, index) => {
       //console.log('for: ',studentGroup)
-        let updatedStudentGroup = await this.studentsGroupsService.setStudentGrade(entity.id, studentGroup.group.id, studentGroup.basic_grade, studentGroup.inter_grade,studentGroup.inter_advanced_grade,studentGroup.advanced_grade);
+        let updatedStudentGroup = await this.studentsGroupsService.setStudentGrade(entity.id, studentGroup.group.id, studentGroup.basic_grade, studentGroup.inter_grade,studentGroup.inter_advanced_grade,studentGroup.advanced_grade,studentGroup.inscripcion,studentGroup.mensualidad );
         student_updated.studentGroups[index] = updatedStudentGroup;
+
     }));
 
+
     return student_updated
-    
 }
 
   @Delete()

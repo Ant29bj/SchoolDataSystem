@@ -106,7 +106,7 @@ export class GroupsController {
     studentgroups = group.studentGroups;
     await Promise.all(studentgroups.map(async (studentGroup, index) => {
       if (studentGroup.student != null){
-        let updatedStudentGroup = await this.studentsGroupsService.setStudentGrade(studentGroup.student.id, id, studentGroup.basic_grade, studentGroup.inter_grade, studentGroup.inter_advanced_grade, studentGroup.advanced_grade);
+        let updatedStudentGroup = await this.studentsGroupsService.setStudentGrade(studentGroup.student.id, id, studentGroup.basic_grade, studentGroup.inter_grade, studentGroup.inter_advanced_grade, studentGroup.advanced_grade, studentGroup.inscripcion, studentGroup.mensualidad);
       }   
     }));
     delete group.studentGroups;

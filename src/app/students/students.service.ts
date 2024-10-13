@@ -54,7 +54,7 @@ export class StudentsService extends GenericService<StudentsEntity> {
       ? student.studentGroups 
       : [student.studentGroups];
       for (const studentGroup of studentGroups) {
-        IMPORTE_MENSUALIDAD += TransformarDeuda(studentGroup.group.carrera.mensualidad);
+        IMPORTE_MENSUALIDAD += TransformarDeuda(studentGroup.mensualidad);
       }
       let deudaTransformada = TransformarDeuda(student.debt);
       deudaTransformada += IMPORTE_MENSUALIDAD;
@@ -119,7 +119,7 @@ export class StudentsService extends GenericService<StudentsEntity> {
     : [student.studentGroups];
     for (const studentGroup of studentGroups) {
       console.log(studentGroup)
-      IMPORTE_MENSUALIDAD += TransformarDeuda(studentGroup.group.carrera.mensualidad);
+      IMPORTE_MENSUALIDAD += TransformarDeuda(studentGroup.mensualidad);
     }
 
     if (student.sobrePago > deuda) {

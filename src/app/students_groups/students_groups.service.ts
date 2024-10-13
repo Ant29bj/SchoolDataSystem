@@ -32,7 +32,7 @@ export class StudentsGroupsService{
         const group = await this.groupRepository.delete(group_delete);
         return
     }
-    async setStudentGrade(student_id: number, group_id: number, basic_grade: number | null, inter_grade: number | null, inter_advanced_grade: number | null, advanced_grade: number | null): Promise<StudentsGroupsEntity> {
+    async setStudentGrade(student_id: number, group_id: number, basic_grade: number | null, inter_grade: number | null, inter_advanced_grade: number | null, advanced_grade: number | null, inscripcion: number | null, mensualidad: number | null): Promise<StudentsGroupsEntity> {
         const student = await this.studentRepository.findOne({ where: { id: student_id } });
         const group = await this.groupRepository.findOne({ where: { id: group_id }, relations: ['carrera'] });
     
@@ -46,19 +46,23 @@ export class StudentsGroupsService{
                 group: { id: group_id }
             }
         });
-    
+        
+
         if (!studentGroup) {
-            let inscripcion = TransformarDeuda(student.inscripcion) + TransformarDeuda(group.carrera.inscripcion);
-            let deuda = TransformarDeuda(student.debt) + TransformarDeuda(group.carrera.mensualidad);
-            student.inscripcion = inscripcion;
+            let inscripcion_student = TransformarDeuda(student.inscripcion) + inscripcion;
+            let deuda = TransformarDeuda(student.debt) + mensualidad;
+            student.inscripcion = inscripcion_student;
             student.debt = deuda;
             const student_updated = await this.studentsService.update(student_id, student);
             studentGroup = new StudentsGroupsEntity();
-            studentGroup.student = student_updated;
             studentGroup.group = group;
-            console.log('updated student', student_updated)
         }
-    
+        if (inscripcion !== null && inscripcion !== undefined) {
+            studentGroup.inscripcion = inscripcion;
+        }
+        if (mensualidad !== null && mensualidad !== undefined) {
+            studentGroup.mensualidad = mensualidad;
+        }
         if (basic_grade !== null && basic_grade !== undefined) {
             studentGroup.basic_grade = basic_grade;
         }

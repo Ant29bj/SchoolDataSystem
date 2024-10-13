@@ -11,11 +11,5 @@ import {
     @Column({ unique: true })
     carrera?: string;
   
-    @Column({ type: 'money', default: 0 })
-    inscripcion: number;
-  
-    @Column({ type: 'money', default: 0 })
-    mensualidad: number;
-  
   }
   

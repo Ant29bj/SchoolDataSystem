@@ -12,9 +12,11 @@ export class StudentsGroupsController {
         @Body('basic_grade') basic_grade: number | null,
         @Body('inter_grade') inter_grade: number | null,
         @Body('inter_advanced_grade') inter_advanced_grade: number | null,
-        @Body('advanced_grade') advanced_grade: number | null
+        @Body('advanced_grade') advanced_grade: number | null,
+        @Body('inscripcion') inscripcion: number | null,
+        @Body('mensualidad') mensualidad: number | null
     ): Promise<StudentsGroupsEntity>{
-        return await this.studentsGroupsService.setStudentGrade(student_id, group_id, basic_grade, inter_grade,inter_advanced_grade,advanced_grade);
+        return await this.studentsGroupsService.setStudentGrade(student_id, group_id, basic_grade, inter_grade,inter_advanced_grade,advanced_grade, inscripcion, mensualidad);
     }
 
     @Get('group/:group_id')

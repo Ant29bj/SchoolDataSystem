@@ -59,10 +59,10 @@ export class StudentsEntity extends GenericEntity {
   @Column({ default: 0 })
   sobrePago: number;
 
-  @Column({type: 'money', default: 0 })
+  @Column({ default: 0 })
   inscripcion: number;
 
-  @Column({ type: 'money', default: 0 })
+  @Column({default: 0 })
   debt: number;
 
   @Column()

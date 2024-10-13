@@ -15,7 +15,7 @@ export class StudentPayment extends GenericEntity {
   @Column()
   nombreCliente: string;
 
-  @Column({ type: 'money' })
+  @Column({})
   importe: number;
 
   @Column({})

@@ -49,8 +49,8 @@ export class StudentsGroupsService{
         
 
         if (!studentGroup) {
-            let inscripcion_student = TransformarDeuda(student.inscripcion) + inscripcion;
-            let deuda = TransformarDeuda(student.debt) + mensualidad;
+            let inscripcion_student = student.inscripcion + inscripcion;
+            let deuda = student.debt + mensualidad;
             student.inscripcion = inscripcion_student;
             student.debt = deuda;
             const student_updated = await this.studentsService.update(student_id, student);

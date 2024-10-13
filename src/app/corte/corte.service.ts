@@ -52,7 +52,7 @@ export class CorteService extends GenericService<CorteEntity> {
     if (transactions.length < 1) return new HttpException('No hay pagos para corte', HttpStatus.CONFLICT)
 
     transactions.map(async (data) => {
-      ingresoTotal += TransformarDeuda(data.importe)
+      ingresoTotal += data.importe
     })
     nuevoCorte.fechaCorte = new Date(data.fecha)
     nuevoCorte.horaInicio = data.horaInicio

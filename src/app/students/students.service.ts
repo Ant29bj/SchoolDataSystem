@@ -54,9 +54,9 @@ export class StudentsService extends GenericService<StudentsEntity> {
       ? student.studentGroups 
       : [student.studentGroups];
       for (const studentGroup of studentGroups) {
-        IMPORTE_MENSUALIDAD += TransformarDeuda(studentGroup.mensualidad);
+        IMPORTE_MENSUALIDAD += studentGroup.mensualidad;
       }
-      let deudaTransformada = TransformarDeuda(student.debt);
+      let deudaTransformada = student.debt;
       deudaTransformada += IMPORTE_MENSUALIDAD;
       if (deudaTransformada <= student.sobrePago) {
         student.sobrePago -= deudaTransformada;
@@ -92,7 +92,7 @@ export class StudentsService extends GenericService<StudentsEntity> {
     for (const student of students) {
       const diffMilis = fechaActual.getTime() - student.paymentDate.getTime();
       const diffDias = diffMilis / (1000 * 60 * 60 * 24);
-      const deuda = TransformarDeuda(student.debt);
+      const deuda = student.debt;
 
       if (student.multas < 3 && diffDias > 3 && deuda > 0) {
         student.debt = deuda + IMPORTE_MULTA;
@@ -111,7 +111,7 @@ export class StudentsService extends GenericService<StudentsEntity> {
       relations: ['studentGroups', 'studentGroups.group','studentGroups.group.carrera'],
     });
     student.sobrePago += pago;
-    let deuda = TransformarDeuda(student.debt);
+    let deuda =student.debt;
     
     let IMPORTE_MENSUALIDAD = 0;
     let studentGroups = Array.isArray(student.studentGroups) 
@@ -119,7 +119,7 @@ export class StudentsService extends GenericService<StudentsEntity> {
     : [student.studentGroups];
     for (const studentGroup of studentGroups) {
       console.log(studentGroup)
-      IMPORTE_MENSUALIDAD += TransformarDeuda(studentGroup.mensualidad);
+      IMPORTE_MENSUALIDAD += studentGroup.mensualidad;
     }
 
     if (student.sobrePago > deuda) {
@@ -161,7 +161,7 @@ export class StudentsService extends GenericService<StudentsEntity> {
         matricula: matricula,
       },
     });
-    let inscripcion = TransformarDeuda(student.inscripcion)
+    let inscripcion = student.inscripcion
     if (inscripcion == 0) {
       return '';
     }

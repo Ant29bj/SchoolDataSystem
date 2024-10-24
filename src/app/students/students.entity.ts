@@ -29,7 +29,7 @@ export class StudentsEntity extends GenericEntity {
   @Column()
   firstName: string;
 
-  @Column()
+  @Column({nullable: true})
   lastName: string;
 
   @Column({ type: 'timestamp' })
@@ -41,19 +41,19 @@ export class StudentsEntity extends GenericEntity {
   @Column({ unique: true, width: 18 })
   curp: string;
 
-  @Column({ length: 10 })
+  @Column({nullable: true,  length: 10 })
   phone: string;
 
   @Column({ default: 0 })
   multas: number;
 
-  @Column()
+  @Column({nullable: true})
   email: string;
 
   @Column({ default: false })
   aumentos: boolean;
 
-  @Column()
+  @Column({nullable: true})
   birthDay: Date;
 
   @Column({ default: 0 })

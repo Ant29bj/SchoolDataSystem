@@ -14,7 +14,7 @@ export class ParentsEntity extends GenericEntity {
   @Column({nullable: true, length:10})
   phone: string
 
-  @Column({nullable: true, length:70})
+  @Column({nullable: true, length:255})
   address: string
 
   @Column({nullable: true})

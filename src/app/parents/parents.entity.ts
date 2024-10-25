@@ -5,10 +5,10 @@ import { DirectionsEntity } from '../directions/directions.entity';
 
 @Entity('parents')
 export class ParentsEntity extends GenericEntity {
-  @Column({nullable: true,  length: 21 })
+  @Column({nullable: true,  length: 55 })
   firstName: string;
 
-  @Column({nullable: true,  length: 21 })
+  @Column({nullable: true,  length: 55 })
   lastName: string;
 
   @Column({nullable: true, length:10})

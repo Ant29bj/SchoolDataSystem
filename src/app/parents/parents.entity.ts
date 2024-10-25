@@ -22,5 +22,6 @@ export class ParentsEntity extends GenericEntity {
 
   @OneToMany(() => StudentsEntity, student => student.parents)
   protegido: StudentsEntity;
+  
  
 }

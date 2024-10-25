@@ -116,6 +116,7 @@ export class StudentsController extends GenericController<
     console.log('cambio: ',entity)
     
     const student_updated = await this.studentsService.update(id, entity);
+    const parent_updated = await this.parentsService.update(entity.parents.id, entity.parents);
 
     await Promise.all(studentgroups.map(async (studentGroup, index) => {
       //console.log('for: ',studentGroup)

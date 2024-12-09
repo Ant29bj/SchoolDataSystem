@@ -32,6 +32,22 @@ export class StudentsGroupsService{
         const group = await this.groupRepository.delete(group_delete);
         return
     }
+    async setMeses( student_group_id: number, data: any){
+        console.log("setMeses",student_group_id, data);
+        let studentGroup = await this.studentGroupsRepository.findOne({
+            where: {
+                id: student_group_id
+            }
+        });
+        if (!studentGroup) {
+            throw new Error('Student or group not found');
+        }
+        studentGroup.meses_pagados = data.meses_pagados;
+        studentGroup.mensualidad = data.mensualidad;
+        console.log("setmeses2",studentGroup);
+        return await this.studentGroupsRepository.update(student_group_id,studentGroup);
+
+    }
     async setStudentGrade(student_id: number, group_id: number, basic_grade: number | null, inter_grade: number | null, inter_advanced_grade: number | null, advanced_grade: number | null, inscripcion: number | null, mensualidad: number | null): Promise<StudentsGroupsEntity> {
         const student = await this.studentRepository.findOne({ where: { id: student_id } });
         const group = await this.groupRepository.findOne({ where: { id: group_id }, relations: ['carrera'] });

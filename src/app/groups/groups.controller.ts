@@ -30,7 +30,7 @@ export class GroupsController {
   ) {}
   @Get()
   findAll(): Promise<GroupsEntity[]> {
-    return this.groupsService.findAll({ relations: ['teacher', 'studentGroups.student', 'carrera'] });
+    return this.groupsService.findAll({ relations: ['teacher', 'studentGroups.student.parents', 'carrera', 'studentGroups.student.payments'] });
   }
   @Get(':id')
   findOne(@Param('id') id: number): Promise<GroupsEntity> {

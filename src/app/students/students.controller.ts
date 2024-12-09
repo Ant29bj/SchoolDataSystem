@@ -110,20 +110,29 @@ export class StudentsController extends GenericController<
   @Put()
   @Patch()
   async update(@Param('id') id: number, @Body() entity: StudentsEntity) {
-    console.log('Entro: ',entity.studentGroups)
     let studentgroups;
     studentgroups = entity.studentGroups;
-    console.log('cambio: ',entity)
+    console.log('cambio: ',entity, "id",id);
     
-    const student_updated = await this.studentsService.update(id, entity);
-    const parent_updated = await this.parentsService.update(entity.parents.id, entity.parents);
+    const student_updated = await this.studentsService.update(entity.id, entity);
+    if(entity.parents){
+      const parent_updated = await this.parentsService.update(entity.parents.id, entity.parents);
+    }
 
-    await Promise.all(studentgroups.map(async (studentGroup, index) => {
-      //console.log('for: ',studentGroup)
-        let updatedStudentGroup = await this.studentsGroupsService.setStudentGrade(entity.id, studentGroup.group.id, studentGroup.basic_grade, studentGroup.inter_grade,studentGroup.inter_advanced_grade,studentGroup.advanced_grade,studentGroup.inscripcion,studentGroup.mensualidad );
-        student_updated.studentGroups[index] = updatedStudentGroup;
+      await Promise.all(studentgroups.map(async (studentGroup, index) => {
+        console.log('for: ',studentGroup)
+        let updatedStudentGroup;
+          if(studentGroup.group ){
+            updatedStudentGroup = await this.studentsGroupsService.setStudentGrade(entity.id, studentGroup.group.id, studentGroup.basic_grade, studentGroup.inter_grade,studentGroup.inter_advanced_grade,studentGroup.advanced_grade,studentGroup.inscripcion,studentGroup.mensualidad );
+          } else {
+            updatedStudentGroup = await this.studentsGroupsService.setMeses(studentGroup.id,studentGroup);
+          }
+          student_updated.studentGroups[index] = updatedStudentGroup;
+  
+      }));
 
-    }));
+      console.log('updated',student_updated);
+    
 
 
     return student_updated

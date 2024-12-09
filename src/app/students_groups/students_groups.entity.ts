@@ -34,10 +34,14 @@ export class StudentsGroupsEntity extends GenericEntity {
 
   @ManyToOne(() => GroupsEntity, group => group.studentGroups)
   group: GroupsEntity;
+  
 
   @Column({ default: 0 })
     inscripcion: number;
   
   @Column({ default: 0 })
     mensualidad: number;
+
+  @Column({ default: 0 })
+    meses_pagados: number;
 }

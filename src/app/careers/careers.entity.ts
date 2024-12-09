@@ -10,6 +10,8 @@ import {
   
     @Column({ unique: true })
     carrera?: string;
-  
+    
+    @Column({ default: 48 })
+    duracion: number;
   }
   

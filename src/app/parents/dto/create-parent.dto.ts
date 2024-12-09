@@ -9,5 +9,5 @@ export class CreateParentDto {
     intNumber: string
     ExtNumber: string
     direction: CreateDirectionDto
-    protegido: CreateStudentDto
+    students: CreateStudentDto
 }

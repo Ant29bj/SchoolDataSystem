@@ -5,4 +5,5 @@ export class CreatePaymentDto {
   importe: number;
   carrera: string;
   concepto: ConceptoPago;
+  meses: number;
 }

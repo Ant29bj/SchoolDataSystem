@@ -12,7 +12,7 @@ export enum ConceptoPago {
 
 @Entity('pagos')
 export class StudentPayment extends GenericEntity {
-  @Column()
+  @Column( { nullable: true })
   nombreCliente: string;
 
   @Column({})
@@ -23,6 +23,9 @@ export class StudentPayment extends GenericEntity {
 
   @Column()
   carrera: string;
+
+  @Column({ default: 1 })
+    meses: number;
 
   @Column({ nullable: true })
   proximoPago: Date;

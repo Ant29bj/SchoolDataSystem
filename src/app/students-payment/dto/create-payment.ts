@@ -6,4 +6,5 @@ export class CreatePaymentDto {
   carrera: string;
   concepto: ConceptoPago;
   meses: number;
+  pagado: boolean;
 }

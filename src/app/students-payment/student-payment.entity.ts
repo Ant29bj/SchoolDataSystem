@@ -25,8 +25,11 @@ export class StudentPayment extends GenericEntity {
   carrera: string;
 
   @Column({ default: 1 })
-    meses: number;
+  meses: number;
 
+  @Column({ default: false })
+  pagado: boolean;
+  
   @Column({ nullable: true })
   proximoPago: Date;
 

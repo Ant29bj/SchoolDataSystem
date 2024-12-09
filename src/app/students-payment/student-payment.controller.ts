@@ -68,6 +68,7 @@ export class StudentPaymentController extends GenericController<
     studentPayment.concepto = requestBody.concepto;
     studentPayment.proximoPago = alumnoModificado.paymentDate;
     studentPayment.meses = requestBody.meses;
+    studentPayment.pagado = requestBody.pagado;
     studentPayment.student = alumnoModificado;
 
     return this.studentPaymentServie.create(studentPayment);

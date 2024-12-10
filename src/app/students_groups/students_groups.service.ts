@@ -33,7 +33,7 @@ export class StudentsGroupsService{
         return
     }
     async setMeses( student_group_id: number, data: any){
-        console.log("setMeses",student_group_id, data);
+        //console.log("setMeses",student_group_id, data);
         let studentGroup = await this.studentGroupsRepository.findOne({
             where: {
                 id: student_group_id
@@ -44,7 +44,7 @@ export class StudentsGroupsService{
         }
         studentGroup.meses_pagados = data.meses_pagados;
         studentGroup.mensualidad = data.mensualidad;
-        console.log("setmeses2",studentGroup);
+        //console.log("setmeses2",studentGroup);
         return await this.studentGroupsRepository.update(student_group_id,studentGroup);
 
     }
@@ -93,7 +93,7 @@ export class StudentsGroupsService{
             studentGroup.advanced_grade = advanced_grade;
         }
     
-        console.log(studentGroup);
+        //console.log(studentGroup);
         return await this.studentGroupsRepository.save(studentGroup);
     }
 

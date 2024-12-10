@@ -21,7 +21,7 @@ export class StudentPaymentController extends GenericController<
 > {
   constructor(
     private readonly studentPaymentServie: StudentPaymentService,
-    private readonly studentService: StudentsService,
+    private readonly studentService: StudentsService
   ) {
     super(studentPaymentServie);
   }
@@ -53,7 +53,7 @@ export class StudentPaymentController extends GenericController<
       throw new HttpException('Alumno no encontrado', HttpStatus.NOT_FOUND);
     }
 
-    this.studentService.abonarMensualidad(matricula, requestBody.importe);
+    this.studentService.abonarMensualidad(matricula, requestBody.importe, requestBody.pagado, requestBody.meses);
 
     const alumnoModificado = await this.studentService.findOne({
       where: {
@@ -61,6 +61,7 @@ export class StudentPaymentController extends GenericController<
       },
     });
 
+    //console.log('alumno: ', alumnoModificado);
     var studentPayment = new StudentPayment();
     studentPayment.importe = requestBody.importe;
     studentPayment.nombreCliente = requestBody.nombreCliente;
@@ -70,6 +71,8 @@ export class StudentPaymentController extends GenericController<
     studentPayment.meses = requestBody.meses;
     studentPayment.pagado = requestBody.pagado;
     studentPayment.student = alumnoModificado;
+
+    //console.log(studentPayment)
 
     return this.studentPaymentServie.create(studentPayment);
   }

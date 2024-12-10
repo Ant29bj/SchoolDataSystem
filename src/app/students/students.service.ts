@@ -5,16 +5,19 @@ import { Status, StudentsEntity } from './students.entity';
 import { GenericService } from '../generics/generic.service';
 import { Cron } from '@nestjs/schedule';
 import { TransformarDeuda } from './utlis/transform-type-money';
+import { StudentsGroupsEntity } from '../students_groups/students_groups.entity';
 
 // Agregar historial de pago del alumno
 const IMPORTE_MULTA: number = 80;
-const DIA_MES: number = 28;
+let DIA_MES: number = 28;
 
 @Injectable()
 export class StudentsService extends GenericService<StudentsEntity> {
   constructor(
     @InjectRepository(StudentsEntity)
     private readonly studentsRepository: Repository<StudentsEntity>,
+    @InjectRepository(StudentsGroupsEntity)
+    private readonly studentGroupsRepository: Repository<StudentsGroupsEntity>,
   ) {
     super(studentsRepository);
   }
@@ -103,7 +106,7 @@ export class StudentsService extends GenericService<StudentsEntity> {
     }
   }
 
-  async abonarMensualidad(matricula: string, pago: number) {
+  async abonarMensualidad(matricula: string, pago: number, pagado: boolean = false, meses: number = 0) {
     const student = await this.studentsRepository.findOne({
       where: {
         matricula: matricula,
@@ -117,36 +120,58 @@ export class StudentsService extends GenericService<StudentsEntity> {
     let studentGroups = Array.isArray(student.studentGroups) 
     ? student.studentGroups 
     : [student.studentGroups];
-    for (const studentGroup of studentGroups) {
-      console.log(studentGroup)
-      IMPORTE_MENSUALIDAD += studentGroup.mensualidad;
+    
+    for (const studentgroup of studentGroups) {
+      IMPORTE_MENSUALIDAD += studentgroup.mensualidad;
+      if (meses){
+        let studentGroup = await this.studentGroupsRepository.findOne({
+          where: {
+              id: studentgroup.id
+          }
+        });
+        studentGroup.meses_pagados += meses;
+        const student_group_updated =  await this.studentGroupsRepository.update(studentgroup.id,studentGroup);
+      
+      }
+    
+
     }
 
-    if (student.sobrePago > deuda) {
-      student.sobrePago -= deuda;
+    if (pagado){
       student.debt = 0;
-    } else if (student.sobrePago <= deuda) {
-      deuda -= student.sobrePago;
       student.sobrePago = 0;
-      student.debt = deuda;
-    }
-
-    if (student.sobrePago > 0) {
-      const mesesAbonados = Math.trunc(student.sobrePago / IMPORTE_MENSUALIDAD);
-      const sigFechaPago = new Date(student.paymentDate);
-      sigFechaPago.setDate(student.paymentDate.getDate() + DIA_MES);
-      if (student.sobrePago >= IMPORTE_MENSUALIDAD) {
-        sigFechaPago.setDate(
-          student.paymentDate.getDate() + mesesAbonados * DIA_MES,
-        );
+    }else{
+      if (student.sobrePago > deuda) {
+        student.sobrePago -= deuda;
+        student.debt = 0;
+      } else if (student.sobrePago <= deuda) {
+        deuda -= student.sobrePago;
+        student.sobrePago = 0;
+        student.debt = deuda;
+      }
+      if (student.sobrePago > 0) {
+        const mesesAbonados = Math.trunc(student.sobrePago / IMPORTE_MENSUALIDAD);
+        const sigFechaPago = new Date(student.paymentDate);
+        sigFechaPago.setDate(student.paymentDate.getDate() + DIA_MES);
+        if (student.sobrePago >= IMPORTE_MENSUALIDAD) {
+          sigFechaPago.setDate(
+            student.paymentDate.getDate() + mesesAbonados * DIA_MES,
+          );
+        }
+        student.paymentDate = sigFechaPago;
+        student.status = Status.Adelantado;
       }
 
-      student.paymentDate = sigFechaPago;
-      student.status = Status.Adelantado;
     }
+    
+
+    
 
     if (student.debt == 0) {
       const sigFechaPago = new Date(student.paymentDate);
+      if (pagado && meses > 0){
+        DIA_MES = DIA_MES * meses;
+      }
       sigFechaPago.setDate(student.paymentDate.getDate() + DIA_MES);
       student.paymentDate = sigFechaPago;
       student.status = Status.NoDebe;

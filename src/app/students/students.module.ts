@@ -6,6 +6,7 @@ import { StudentsEntity } from './students.entity';
 import { ParentsModule } from '../parents/parents.module';
 import { StudentsGroupsModule } from '../students_groups/students_groups.module';
 import { GroupsModule } from '../groups/groups.module';
+import { StudentsGroupsEntity } from '../students_groups/students_groups.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([StudentsEntity]), forwardRef(() => ParentsModule), forwardRef(() => StudentsGroupsModule), forwardRef(() => GroupsModule),],

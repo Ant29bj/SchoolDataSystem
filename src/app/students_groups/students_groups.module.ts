@@ -10,6 +10,6 @@ import { GroupsModule } from '../groups/groups.module';
   imports:[TypeOrmModule.forFeature([StudentsGroupsEntity]), forwardRef(() => StudentsModule), forwardRef(() => GroupsModule)],
   controllers: [StudentsGroupsController],
   providers: [StudentsGroupsService],
-  exports: [StudentsGroupsService],
+  exports: [StudentsGroupsService, TypeOrmModule],
 })
 export class StudentsGroupsModule {}

@@ -101,7 +101,7 @@ export class GroupsController {
         }`;
     }
     
-    console.log(group)
+    //console.log(group)
     let studentgroups;
     studentgroups = group.studentGroups;
     await Promise.all(studentgroups.map(async (studentGroup, index) => {
